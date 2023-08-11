@@ -2,19 +2,19 @@
 #include <LiquidCrystal_I2C.h>
 #include <NewPing.h>
 
-const int pompe1Pin = 2;
-const int pompe2Pin = 3;
-const int boutonManuelPompe1Pin = 4;
-const int boutonManuelPompe2Pin = 5;
-const int boutonModePin = 6;
-const int ledPompe1Pin = 7;
-const int ledPompe2Pin = 8;
-const int ledSystemePin = 9;
-const int triggerPin = 10;
-const int echoPin = 11;
-const int boutonAdjSeuils = 12;
-const int boutonPosSeuils = 13;
-const int boutonNegSeuils = A1;
+int pompe1Pin = 2;
+int pompe2Pin = 3;
+int boutonManuelPompe1Pin = 4;
+int boutonManuelPompe2Pin = 5;
+int boutonModePin = 6;
+int ledPompe1Pin = 7;
+int ledPompe2Pin = 8;
+int ledSystemePin = 9;
+int triggerPin = 10;
+int echoPin = 11;
+int boutonAdjSeuils = 12;
+int boutonPosSeuils = 13;
+int boutonNegSeuils = A1;
 
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
@@ -58,7 +58,7 @@ void setup() {
 void loop() {
   unsigned long currentTime = millis();
 
-  if (digitalRead(boutonModePin) || (boutonModePin && boutonAdjSeuils) == LOW) {
+  if (digitalRead(boutonModePin) == LOW) {
     modeManuel = false;
     digitalWrite(ledSystemePin, HIGH);
     delay(250);
@@ -72,7 +72,6 @@ void loop() {
 
   if (currentTime - lastDistanceReadTime >= distanceReadInterval) {
     distance = sonar.ping_cm();
-
     if (!modeManuel) {
       if (distance <= seuilAutoPompe1) {
         controlerPompe(pompe1Pin, true, ledPompe1Pin);
@@ -81,7 +80,6 @@ void loop() {
         controlerPompe(pompe1Pin, false, ledPompe1Pin);
         etatLedPompe1 = false;
       }
-
       if (distance <= seuilAutoPompe2) {
         controlerPompe(pompe2Pin, true, ledPompe2Pin);
         etatLedPompe2 = true;
@@ -95,19 +93,16 @@ void loop() {
       controlerPompe(pompe2Pin, etatManuelPompe2, ledPompe2Pin);
       etatLedPompe2 = etatManuelPompe2;
     }
-
     lastDistanceReadTime = currentTime;
   }
 
   if (modeManuel) {
     digitalWrite(ledPompe1Pin, etatManuelPompe1);
     digitalWrite(ledPompe2Pin, etatManuelPompe2);
-
     if (currentTime - previousMillisSystem >= intervalSystem) {
       previousMillisSystem = currentTime;
       digitalWrite(ledSystemePin, !digitalRead(ledSystemePin));
     }
-
     lcd.setCursor(0, 2);
     if (etatManuelPompe1 && etatManuelPompe2) {
       lcd.print("Forcage pompe1+2 ");
