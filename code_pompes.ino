@@ -121,7 +121,7 @@ void loop() {
     lcd.setCursor(0, 2);
     lcd.print("Distance: ");
     lcd.print(distance);
-    lcd.print(" cm ");
+    lcd.print(" cm   ");
   }
 
   lcd.setCursor(0, 0);
