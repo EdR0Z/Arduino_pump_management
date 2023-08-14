@@ -2,8 +2,7 @@
 #include <LiquidCrystal_I2C.h>
 #include <NewPing.h>
 
-// Broches
-
+// Tableau broches
 const int broches[10] = { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
 /* Pour note tableau
 pompe1Pin = 2;
@@ -22,22 +21,17 @@ echo = 11;
 const int seuilPompe1 = 50;
 const int seuilPompe2 = 30;
 const int max_distance = 400;
-
 unsigned int distance = 0;
 
 // États
 boolean selecteurMode = false;
 boolean selecteurModeAdj = false;
-
 boolean etatPompe1Pin = false;
 boolean etatPompe2Pin = false;
-
 boolean bpPompe1 = false;
 boolean bpPompe2 = false;
-
 boolean bpAdjPlus = false;
 boolean bpAdjMoins = false;
-
 boolean modeManuel = false;
 boolean modeAuto = false;
 boolean modeAdj = false;
@@ -49,19 +43,14 @@ NewPing sonar(broches[8], broches[9], max_distance);
 void setup() {
   pinMode(broches[0], OUTPUT);
   pinMode(broches[1], OUTPUT);
-
   pinMode(broches[2], INPUT_PULLUP);
   pinMode(broches[3], INPUT_PULLUP);
-
   pinMode(broches[4], INPUT_PULLUP);
   pinMode(broches[5], INPUT_PULLUP);
-
   pinMode(broches[6], INPUT_PULLUP);
   pinMode(broches[7], INPUT_PULLUP);
-
   pinMode(broches[8], OUTPUT);
   pinMode(broches[9], INPUT);
-
   pinMode(LED_BUILTIN, OUTPUT);
 
   // Les broches sont LOW au démarrage
