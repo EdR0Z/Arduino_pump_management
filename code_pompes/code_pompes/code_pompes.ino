@@ -73,35 +73,37 @@ void loop() {
 
   distance = sonar.ping_cm();
 
-  if (broches[4] == LOW) {
-    modeManuel = true;
-    modeAuto = false;
-    modeAdj = false;
-  } else if (broches[4] == HIGH) {
-    modeManuel = false;
-    modeAuto = true;
-    modeAdj = false;
-  } else if ((broches[4] + broches[5]) == HIGH) {
-    modeManuel = false;
-    modeAuto = false;
-    modeAdj = true;
-  }
+  if (modeManuel) {
+    if (broches[4] == LOW) {
+      modeManuel = true;
+      modeAuto = false;
+      modeAdj = false;
+    } else if (broches[4] == HIGH) {
+      modeManuel = false;
+      modeAuto = true;
+      modeAdj = false;
+    } else if (broches[4] && broches[5]) {
+        modeManuel = false;
+        modeAuto = false;
+        modeAdj = true;
+      }
 
-  if (modeAuto) {
-    if (distance <= seuilPompe1) {
-      broches[0], true;
-      etatPompe1Pin = true;
-    } else {
-      broches[0], false;
-      etatPompe1Pin = false;
-    }
+    if (modeAuto) {
+      if (distance <= seuilPompe1) {
+        broches[0], true;
+        etatPompe1Pin = true;
+      } else {
+        broches[0], false;
+        etatPompe1Pin = false;
+      }
 
-    if (distance <= seuilPompe2) {
-      broches[1], true;
-      etatPompe2Pin = true;
-    } else {
-      broches[1], false;
-      etatPompe2Pin = false;
+      if (distance <= seuilPompe2) {
+        broches[1], true;
+        etatPompe2Pin = true;
+      } else {
+        broches[1], false;
+        etatPompe2Pin = false;
+      }
     }
   }
 }
