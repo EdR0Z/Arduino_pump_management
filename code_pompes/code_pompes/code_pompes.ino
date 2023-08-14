@@ -56,19 +56,14 @@ void setup() {
   // Les broches sont LOW au démarrage
   digitalWrite(broches[0], LOW);
   digitalWrite(broches[1], LOW);
-
   digitalWrite(broches[2], LOW);
   digitalWrite(broches[3], LOW);
-
   digitalWrite(broches[4], LOW);
   digitalWrite(broches[5], LOW);
-
   digitalWrite(broches[6], LOW);
   digitalWrite(broches[7], LOW);
-
-  digitalWrite(LED_BUILTIN, LOW);
-
   digitalWrite(broches[8], LOW);
+  digitalWrite(LED_BUILTIN, LOW);
   // Initialisation des fonctions du lcd
   lcd.init();
   lcd.backlight();
