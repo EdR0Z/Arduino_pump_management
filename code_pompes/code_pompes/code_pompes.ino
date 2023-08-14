@@ -74,7 +74,11 @@ void loop() {
   distance = sonar.ping_cm();
 
   if (modeManuel) {
-    if (broches[4] == LOW) {
+    if (broches[4] && broches[5]) {
+      modeManuel = false;
+      modeAuto = false;
+      modeAdj = true;
+    } else if (broches[4] == LOW) {
       modeManuel = true;
       modeAuto = false;
       modeAdj = false;
@@ -82,11 +86,7 @@ void loop() {
       modeManuel = false;
       modeAuto = true;
       modeAdj = false;
-    } else if (broches[4] && broches[5]) {
-        modeManuel = false;
-        modeAuto = false;
-        modeAdj = true;
-      }
+    }
 
     if (modeAuto) {
       if (distance <= seuilPompe1) {
