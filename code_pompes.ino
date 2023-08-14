@@ -2,142 +2,122 @@
 #include <LiquidCrystal_I2C.h>
 #include <NewPing.h>
 
-int pompe1Pin = 2;
-int pompe2Pin = 3;
-int boutonManuelPompe1Pin = 4;
-int boutonManuelPompe2Pin = 5;
-int boutonModePin = 6;
-int ledPompe1Pin = 7;
-int ledPompe2Pin = 8;
-int ledSystemePin = 9;
-int triggerPin = 10;
-int echoPin = 11;
-int boutonAdjSeuils = 12;
-int boutonPosSeuils = 13;
-int boutonNegSeuils = A1;
+// Broches
+const int pompe1Pin = 2;
+const int pompe2Pin = 3;
 
-LiquidCrystal_I2C lcd(0x27, 16, 2);
+const int boutonPoussoirPompe1 = 4;
+const int boutonpPoussoirPompe2 = 5;
+
+const int interSelecteurMode = 6;
+const int interSelecteurModeAdj = 7;
+
+const int boutonPoussoirAdjPlus = 8;
+const int boutonPoussoirAdjMoins = 9;
+
+const int trigger = 10;
+const int echo = 11;
+
+// Variables
+const int seuilPompe1 = 50;
+const int seuilPompe2 = 30;
+const int max_distance = 400;
+
+unsigned int distance = 0;
+
+// États
+boolean selecteurMode = false;
+boolean selecteurModeAdj = false;
+
+boolean etatPompe1Pin = false;
+boolean etatPompe2Pin = false;
+
+boolean bpPompe1 = false;
+boolean bpPompe2 = false;
+
+boolean bpAdjPlus = false;
+boolean bpAdjMoins = false;
 
 boolean modeManuel = false;
-boolean modeAdjSeuils = false;
-boolean etatManuelPompe1 = false;
-boolean etatManuelPompe2 = false;
-boolean etatLedPompe1 = false;
-boolean etatLedPompe2 = false;
+boolean modeAuto = false;
+boolean modeAdj = false;
 
-const unsigned long distanceReadInterval = 200;
-unsigned long lastDistanceReadTime = 0;
-unsigned int distance = 0;
-unsigned long previousMillis = 0;
-unsigned long previousMillisSystem = 0;
-const long intervalSystem = 500;
-const int seuilAutoPompe1 = 10;
-const int seuilAutoPompe2 = 5;
-const int maxDistance = 400;
-
-NewPing sonar(triggerPin, echoPin, maxDistance);
+// Modules externes
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+NewPing sonar(trigger, echo, max_distance);
 
 void setup() {
   pinMode(pompe1Pin, OUTPUT);
   pinMode(pompe2Pin, OUTPUT);
-  pinMode(ledPompe1Pin, OUTPUT);
-  pinMode(ledPompe2Pin, OUTPUT);
-  pinMode(ledSystemePin, OUTPUT);
-  pinMode(boutonManuelPompe1Pin, INPUT_PULLUP);
-  pinMode(boutonManuelPompe2Pin, INPUT_PULLUP);
-  pinMode(boutonModePin, INPUT_PULLUP);
-  pinMode(boutonAdjSeuils, INPUT_PULLUP);
-  pinMode(boutonPosSeuils, INPUT_PULLUP);
-  pinMode(boutonNegSeuils, INPUT_PULLUP);
 
+  pinMode(bpPompe1, INPUT_PULLUP);
+  pinMode(bpPompe2, INPUT_PULLUP);
+
+  pinMode(selecteurMode, INPUT_PULLUP);
+  pinMode(selecteurModeAdj, INPUT_PULLUP);
+
+  pinMode(bpAdjPlus, INPUT_PULLUP);
+  pinMode(bpAdjMoins, INPUT_PULLUP);
+
+  pinMode(trigger, OUTPUT);
+  pinMode(echo, INPUT);
+
+  pinMode(LED_BUILTIN, OUTPUT);
+
+  // Les broches sont LOW au démarrage
+  digitalWrite(pompe1Pin, LOW);
+  digitalWrite(pompe2Pin, LOW);
+
+  digitalWrite(bpPompe1, LOW);
+  digitalWrite(bpPompe2, LOW);
+
+  digitalWrite(selecteurMode, LOW);
+  digitalWrite(selecteurModeAdj, LOW);
+
+  digitalWrite(bpAdjPlus, LOW);
+  digitalWrite(bpAdjMoins, LOW);
+
+  digitalWrite(LED_BUILTIN, LOW);
+
+  digitalWrite(trigger, LOW);
+  // Initialisation des fonctions du lcd
   lcd.init();
   lcd.backlight();
-  digitalWrite(ledSystemePin, HIGH);
 }
 
 void loop() {
-  unsigned long currentTime = millis();
 
-  if (digitalRead(boutonModePin) == LOW) {
-    modeManuel = false;
-    digitalWrite(ledSystemePin, HIGH);
-    delay(250);
-  } else {
+  distance = sonar.ping_cm();
+
+  if (selecteurMode == LOW) {
     modeManuel = true;
-    delay(250);
-  }
+    modeAuto = false;
+    modeAdj = false;
+  } else if (selecteurMode == HIGH) {
+    modeManuel = false;
+    modeAuto = true;
+    modeAdj = false;
+  } else if ((selecteurMode + selecteurModeAdj) == HIGH) {
+      modeManuel = false;
+      modeAuto = false;
+      modeAdj = true;
+    }
 
-  etatManuelPompe1 = digitalRead(boutonManuelPompe1Pin) == LOW;
-  etatManuelPompe2 = digitalRead(boutonManuelPompe2Pin) == LOW;
-
-  if (currentTime - lastDistanceReadTime >= distanceReadInterval) {
-    distance = sonar.ping_cm();
-    if (!modeManuel) {
-      if (distance <= seuilAutoPompe1) {
-        controlerPompe(pompe1Pin, true, ledPompe1Pin);
-        etatLedPompe1 = true;
-      } else {
-        controlerPompe(pompe1Pin, false, ledPompe1Pin);
-        etatLedPompe1 = false;
-      }
-      if (distance <= seuilAutoPompe2) {
-        controlerPompe(pompe2Pin, true, ledPompe2Pin);
-        etatLedPompe2 = true;
-      } else {
-        controlerPompe(pompe2Pin, false, ledPompe2Pin);
-        etatLedPompe2 = false;
-      }
+  if (modeAuto) {
+    if (distance <= seuilPompe1) {
+      pompe1Pin, true;
+      etatPompe1Pin = true;
     } else {
-      controlerPompe(pompe1Pin, etatManuelPompe1, ledPompe1Pin);
-      etatLedPompe1 = etatManuelPompe1;
-      controlerPompe(pompe2Pin, etatManuelPompe2, ledPompe2Pin);
-      etatLedPompe2 = etatManuelPompe2;
+      pompe1Pin, false;
+      etatPompe1Pin = false;
     }
-    lastDistanceReadTime = currentTime;
-  }
 
-  if (modeManuel) {
-    digitalWrite(ledPompe1Pin, etatManuelPompe1);
-    digitalWrite(ledPompe2Pin, etatManuelPompe2);
-    if (currentTime - previousMillisSystem >= intervalSystem) {
-      previousMillisSystem = currentTime;
-      digitalWrite(ledSystemePin, !digitalRead(ledSystemePin));
-    }
-    lcd.setCursor(0, 2);
-    if (etatManuelPompe1 && etatManuelPompe2) {
-      lcd.print("Forcage pompe1+2 ");
-    } else if (etatManuelPompe1) {
-      lcd.print("Forcage pompe1   ");
-    } else if (etatManuelPompe2) {
-      lcd.print("Forcage pompe2   ");
+    if (distance <= seuilPompe2) {
+      pompe2Pin, true;
+      etatPompe2Pin = true;
     } else {
-      lcd.print("Forcages inactifs");
+      pompe2Pin, false;
+      etatPompe2Pin = false;
     }
-  } else {
-    digitalWrite(ledPompe1Pin, etatLedPompe1);
-    digitalWrite(ledPompe2Pin, etatLedPompe2);
-    digitalWrite(ledSystemePin, HIGH);
-
-    lcd.setCursor(0, 2);
-    lcd.print("Distance: ");
-    lcd.print(distance);
-    lcd.print(" cm   ");
   }
-
-  lcd.setCursor(0, 0);
-  lcd.print("Mode: ");
-  lcd.print(modeManuel ? "Manuel     " : "Automatique");
-
-  lcd.setCursor(0, 1);
-  lcd.print("P1:");
-  lcd.print(etatLedPompe1 ? "ON " : "OFF");
-
-  lcd.setCursor(8, 1);
-  lcd.print("P2:");
-  lcd.print(etatLedPompe2 ? "ON " : "OFF");
-}
-
-void controlerPompe(int pin, boolean etat, int ledPin) {
-  digitalWrite(pin, etat);
-  digitalWrite(ledPin, etat);
 }
