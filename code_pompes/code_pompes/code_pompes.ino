@@ -73,7 +73,9 @@ void loop() {
 
   distance = sonar.ping_cm();
 
-  if (digitalRead(broches[4]) == LOW) {
+
+
+  if (digitalRead(broches[4]) == LOW) {  // Selecteur Mode
     modeManuel = false;
     delay(250);
   } else if (digitalRead(broches[4]) == HIGH) {
@@ -81,7 +83,7 @@ void loop() {
     delay(250);
   }
 
-  if (digitalRead(broches[5]) == LOW) {
+  if (digitalRead(broches[5]) == LOW) {  // Selecteur modeAdj
     modeAdj = false;
     delay(250);
   } else if (digitalRead(broches[5]) == HIGH) {
@@ -89,10 +91,8 @@ void loop() {
     delay(250);
 
 
-
-
     if (modeManuel) {
-      if (broches[2] == LOW) {  //boutonPoussoirPompe1
+      if (broches[2] == LOW) {  // boutonPoussoirPompe1
         digitalWrite(broches[0], LOW);
         etatPompe1Pin = false;
       } else {
@@ -100,7 +100,7 @@ void loop() {
         etatPompe1Pin = true;
       }
 
-      if (broches[3] == LOW) {  //boutonPoussoirPompe2
+      if (broches[3] == LOW) {  // boutonPoussoirPompe2
         digitalWrite(broches[1], LOW);
         etatPompe2Pin = false;
       } else {
