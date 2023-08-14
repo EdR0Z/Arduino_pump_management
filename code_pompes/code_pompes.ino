@@ -77,17 +77,19 @@ void loop() {
 
 
   if (digitalRead(broches[4]) == LOW) {  // Selecteur Mode
-    modeManuel = false;
+    modeManuel = false;                  // Mode manuel off
+    modeAuto = true;                     // Mode auto on
     delay(250);
-  } else if (digitalRead(broches[4]) == HIGH) {
-    modeManuel = true;  // Mode manuel
+  } else {
+    modeManuel = true;  // Mode manuel on
+    modeAuto = false;   // Mode auto off
     delay(250);
   }
 
   if (digitalRead(broches[5]) == LOW) {  // Selecteur modeAdj
     modeAdj = false;
     delay(250);
-  } else if (digitalRead(broches[5]) == HIGH) {
+  } else {
     modeAdj = true;
     delay(250);
 
