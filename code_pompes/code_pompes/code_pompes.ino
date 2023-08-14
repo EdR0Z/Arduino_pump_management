@@ -64,6 +64,7 @@ void setup() {
   digitalWrite(broches[7], LOW);
   digitalWrite(broches[8], LOW);
   digitalWrite(LED_BUILTIN, LOW);
+
   // Initialisation des fonctions du lcd
   lcd.init();
   lcd.backlight();
@@ -92,19 +93,19 @@ void loop() {
 
 
     if (modeManuel) {
-      if (broches[2] == LOW) {  // boutonPoussoirPompe1
-        digitalWrite(broches[0], LOW);
+      if (broches[2] == LOW) {          // boutonPoussoirPompe1
+        digitalWrite(broches[0], LOW);  // pompe1Pin
         etatPompe1Pin = false;
       } else {
-        digitalWrite(broches[0], HIGH);
+        digitalWrite(broches[0], HIGH);  // pompe1Pin
         etatPompe1Pin = true;
       }
 
-      if (broches[3] == LOW) {  // boutonPoussoirPompe2
-        digitalWrite(broches[1], LOW);
+      if (broches[3] == LOW) {          // boutonPoussoirPompe2
+        digitalWrite(broches[1], LOW);  // pompe2Pin
         etatPompe2Pin = false;
       } else {
-        digitalWrite(broches[1], HIGH);
+        digitalWrite(broches[1], HIGH);  // pompe2Pin
         etatPompe2Pin = true;
       }
     }
