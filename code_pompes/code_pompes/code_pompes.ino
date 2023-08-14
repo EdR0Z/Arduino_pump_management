@@ -43,12 +43,12 @@ NewPing sonar(broches[8], broches[9], max_distance);
 void setup() {
   pinMode(broches[0], OUTPUT);
   pinMode(broches[1], OUTPUT);
-  pinMode(broches[2], INPUT_PULLUP);
-  pinMode(broches[3], INPUT_PULLUP);
-  pinMode(broches[4], INPUT_PULLUP);
-  pinMode(broches[5], INPUT_PULLUP);
-  pinMode(broches[6], INPUT_PULLUP);
-  pinMode(broches[7], INPUT_PULLUP);
+  pinMode(broches[2], INPUT);
+  pinMode(broches[3], INPUT);
+  pinMode(broches[4], INPUT);
+  pinMode(broches[5], INPUT);
+  pinMode(broches[6], INPUT);
+  pinMode(broches[7], INPUT);
   pinMode(broches[8], OUTPUT);
   pinMode(broches[9], INPUT);
   pinMode(LED_BUILTIN, OUTPUT);
