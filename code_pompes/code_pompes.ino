@@ -92,24 +92,24 @@ void loop() {
   } else {
     modeAdj = true;
     delay(250);
+  }
 
 
-    if (modeManuel) {
-      if (broches[2] == LOW) {          // boutonPoussoirPompe1
-        digitalWrite(broches[0], LOW);  // pompe1Pin
-        etatPompe1Pin = false;
-      } else {
-        digitalWrite(broches[0], HIGH);  // pompe1Pin
-        etatPompe1Pin = true;
-      }
+  if (modeManuel) {
+    if (broches[2] == LOW) {          // boutonPoussoirPompe1
+      digitalWrite(broches[0], LOW);  // pompe1Pin
+      etatPompe1Pin = false;
+    } else {
+      digitalWrite(broches[0], HIGH);  // pompe1Pin
+      etatPompe1Pin = true;
+    }
 
-      if (broches[3] == LOW) {          // boutonPoussoirPompe2
-        digitalWrite(broches[1], LOW);  // pompe2Pin
-        etatPompe2Pin = false;
-      } else {
-        digitalWrite(broches[1], HIGH);  // pompe2Pin
-        etatPompe2Pin = true;
-      }
+    if (broches[3] == LOW) {          // boutonPoussoirPompe2
+      digitalWrite(broches[1], LOW);  // pompe2Pin
+      etatPompe2Pin = false;
+    } else {
+      digitalWrite(broches[1], HIGH);  // pompe2Pin
+      etatPompe2Pin = true;
     }
   }
 }
