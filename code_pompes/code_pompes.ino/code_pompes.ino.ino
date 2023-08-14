@@ -3,20 +3,20 @@
 #include <NewPing.h>
 
 // Broches
-const int pompe1Pin = 2;
-const int pompe2Pin = 3;
 
-const int boutonPoussoirPompe1 = 4;
-const int boutonpPoussoirPompe2 = 5;
-
-const int interSelecteurMode = 6;
-const int interSelecteurModeAdj = 7;
-
-const int boutonPoussoirAdjPlus = 8;
-const int boutonPoussoirAdjMoins = 9;
-
-const int trigger = 10;
-const int echo = 11;
+const int broches[10] = { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+/* Pour note tableau
+pompe1Pin = 2;
+pompe2Pin = 3;
+boutonPoussoirPompe1 = 4;
+boutonpPoussoirPompe2 = 5;
+interSelecteurMode = 6;
+interSelecteurModeAdj = 7;
+boutonPoussoirAdjPlus = 8;
+boutonPoussoirAdjMoins = 9;
+trigger = 10;
+echo = 11;
+*/
 
 // Variables
 const int seuilPompe1 = 50;
@@ -44,42 +44,42 @@ boolean modeAdj = false;
 
 // Modules externes
 LiquidCrystal_I2C lcd(0x27, 16, 2);
-NewPing sonar(trigger, echo, max_distance);
+NewPing sonar(broches[8], broches[9], max_distance);
 
 void setup() {
-  pinMode(pompe1Pin, OUTPUT);
-  pinMode(pompe2Pin, OUTPUT);
+  pinMode(broches[0], OUTPUT);
+  pinMode(broches[1], OUTPUT);
 
-  pinMode(bpPompe1, INPUT_PULLUP);
-  pinMode(bpPompe2, INPUT_PULLUP);
+  pinMode(broches[2], INPUT_PULLUP);
+  pinMode(broches[3], INPUT_PULLUP);
 
-  pinMode(selecteurMode, INPUT_PULLUP);
-  pinMode(selecteurModeAdj, INPUT_PULLUP);
+  pinMode(broches[4], INPUT_PULLUP);
+  pinMode(broches[5], INPUT_PULLUP);
 
-  pinMode(bpAdjPlus, INPUT_PULLUP);
-  pinMode(bpAdjMoins, INPUT_PULLUP);
+  pinMode(broches[6], INPUT_PULLUP);
+  pinMode(broches[7], INPUT_PULLUP);
 
-  pinMode(trigger, OUTPUT);
-  pinMode(echo, INPUT);
+  pinMode(broches[8], OUTPUT);
+  pinMode(broches[9], INPUT);
 
   pinMode(LED_BUILTIN, OUTPUT);
 
   // Les broches sont LOW au démarrage
-  digitalWrite(pompe1Pin, LOW);
-  digitalWrite(pompe2Pin, LOW);
+  digitalWrite(broches[0], LOW);
+  digitalWrite(broches[1], LOW);
 
-  digitalWrite(bpPompe1, LOW);
-  digitalWrite(bpPompe2, LOW);
+  digitalWrite(broches[2], LOW);
+  digitalWrite(broches[3], LOW);
 
-  digitalWrite(selecteurMode, LOW);
-  digitalWrite(selecteurModeAdj, LOW);
+  digitalWrite(broches[4], LOW);
+  digitalWrite(broches[5], LOW);
 
-  digitalWrite(bpAdjPlus, LOW);
-  digitalWrite(bpAdjMoins, LOW);
+  digitalWrite(broches[6], LOW);
+  digitalWrite(broches[7], LOW);
 
   digitalWrite(LED_BUILTIN, LOW);
 
-  digitalWrite(trigger, LOW);
+  digitalWrite(broches[8], LOW);
   // Initialisation des fonctions du lcd
   lcd.init();
   lcd.backlight();
@@ -89,34 +89,34 @@ void loop() {
 
   distance = sonar.ping_cm();
 
-  if (selecteurMode == LOW) {
+  if (broches[4] == LOW) {
     modeManuel = true;
     modeAuto = false;
     modeAdj = false;
-  } else if (selecteurMode == HIGH) {
+  } else if (broches[4] == HIGH) {
     modeManuel = false;
     modeAuto = true;
     modeAdj = false;
-  } else if ((selecteurMode + selecteurModeAdj) == HIGH) {
-      modeManuel = false;
-      modeAuto = false;
-      modeAdj = true;
-    }
+  } else if ((broches[4] + broches[5]) == HIGH) {
+    modeManuel = false;
+    modeAuto = false;
+    modeAdj = true;
+  }
 
   if (modeAuto) {
     if (distance <= seuilPompe1) {
-      pompe1Pin, true;
+      broches[0], true;
       etatPompe1Pin = true;
     } else {
-      pompe1Pin, false;
+      broches[0], false;
       etatPompe1Pin = false;
     }
 
     if (distance <= seuilPompe2) {
-      pompe2Pin, true;
+      broches[1], true;
       etatPompe2Pin = true;
     } else {
-      pompe2Pin, false;
+      broches[1], false;
       etatPompe2Pin = false;
     }
   }
