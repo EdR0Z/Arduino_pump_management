@@ -81,11 +81,32 @@ void loop() {
     delay(250);
   }
 
-  if (modeManuel) {
-    if (broches[2] == LOW) {
-      digitalWrite(broches[0], LOW);
-    } else {
-      digitalWrite(broches[0], HIGH);
+  if (digitalRead(broches[5]) == LOW) {
+    modeAdj = false;
+    delay(250);
+  } else if (digitalRead(broches[5]) == HIGH) {
+    modeAdj = true;
+    delay(250);
+
+
+
+
+    if (modeManuel) {
+      if (broches[2] == LOW) {  //boutonPoussoirPompe1
+        digitalWrite(broches[0], LOW);
+        etatPompe1Pin = false;
+      } else {
+        digitalWrite(broches[0], HIGH);
+        etatPompe1Pin = true;
+      }
+
+      if (broches[3] == LOW) {  //boutonPoussoirPompe2
+        digitalWrite(broches[1], LOW);
+        etatPompe2Pin = false;
+      } else {
+        digitalWrite(broches[1], HIGH);
+        etatPompe2Pin = true;
+      }
     }
   }
 }
