@@ -43,26 +43,17 @@ NewPing sonar(broches[8], broches[9], max_distance);
 void setup() {
   pinMode(broches[0], OUTPUT);
   pinMode(broches[1], OUTPUT);
-  pinMode(broches[2], INPUT_PULLUP);
-  pinMode(broches[3], INPUT_PULLUP);
-  pinMode(broches[4], INPUT_PULLUP);
-  pinMode(broches[5], INPUT_PULLUP);
-  pinMode(broches[6], INPUT_PULLUP);
-  pinMode(broches[7], INPUT_PULLUP);
+  pinMode(broches[2], INPUT);
+  pinMode(broches[3], INPUT);
+  pinMode(broches[4], INPUT);
+  pinMode(broches[5], INPUT);
+  pinMode(broches[6], INPUT);
+  pinMode(broches[7], INPUT);
   pinMode(broches[8], OUTPUT);
   pinMode(broches[9], INPUT);
   pinMode(LED_BUILTIN, OUTPUT);
 
   // Les broches sont LOW au démarrage
-  digitalWrite(broches[0], LOW);
-  digitalWrite(broches[1], LOW);
-  digitalWrite(broches[2], LOW);
-  digitalWrite(broches[3], LOW);
-  digitalWrite(broches[4], LOW);
-  digitalWrite(broches[5], LOW);
-  digitalWrite(broches[6], LOW);
-  digitalWrite(broches[7], LOW);
-  digitalWrite(broches[8], LOW);
   digitalWrite(LED_BUILTIN, LOW);
 
   // Initialisation des fonctions du lcd
@@ -74,7 +65,20 @@ void loop() {
 
   distance = sonar.ping_cm();
 
+  Serial.println("modeManuel");
+  Serial.println(modeManuel);
+  Serial.println("------");
+  delay(1000);
 
+  Serial.println("modeAuto");
+  Serial.println(modeAuto);
+  Serial.println("------");
+  delay(1000);
+
+  Serial.println("modeAdj");
+  Serial.println(modeAdj);
+  Serial.println("------");
+  delay(1000);
 
   if (digitalRead(broches[4]) == LOW) {  // Selecteur Mode
     modeManuel = false;                  // Mode manuel off
