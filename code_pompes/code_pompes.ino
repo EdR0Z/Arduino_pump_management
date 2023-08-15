@@ -37,6 +37,12 @@ boolean modeAdj = false;
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 NewPing sonar(trigger, echo, max_distance);
 
+void printAndDelay(const char* label, int value) {
+  Serial.println(label + value);
+  Serial.println("------");
+  delay(1000);
+}
+
 void setup() {
   pinMode(pompe1Pin, OUTPUT);
   pinMode(pompe2Pin, OUTPUT);
@@ -63,50 +69,17 @@ void loop() {
   distance = sonar.ping_cm();
 
   //  Debug
-  Serial.println("modeManuel");
-  Serial.println(modeManuel);
-  Serial.println("------");
-  delay(1000);
-  Serial.println("modeAuto");
-  Serial.println(modeAuto);
-  Serial.println("------");
-  delay(1000);
-  Serial.println("modeAdj");
-  Serial.println(modeAdj);
-  Serial.println("------");
-  delay(1000);
-  Serial.println("selecteurMode");
-  Serial.println(selecteurMode);
-  Serial.println("------");
-  delay(1000);
-  Serial.println("selecteurModeAdj");
-  Serial.println(selecteurModeAdj);
-  Serial.println("------");
-  delay(1000);
-  Serial.println("etatPompe1Pin");
-  Serial.println(etatPompe1Pin);
-  Serial.println("------");
-  delay(1000);
-  Serial.println("etatPompe2Pin");
-  Serial.println(etatPompe2Pin);
-  Serial.println("------");
-  delay(1000);
-  Serial.println("bpPompe1");
-  Serial.println(bpPompe1);
-  Serial.println("------");
-  delay(1000);
-  Serial.println("bpPompe2");
-  Serial.println(bpPompe2);
-  Serial.println("------");
-  delay(1000);
-  Serial.println("bpAdjPlus");
-  Serial.println(bpAdjPlus);
-  Serial.println("------");
-  delay(1000);
-  Serial.println("bpAdjMoins");
-  Serial.println(bpAdjMoins);
-  Serial.println("------");
-  delay(1000);
+  printAndDelay("modeManuel", modeManuel);
+  printAndDelay("modeAuto", modeAuto);
+  printAndDelay("modeAdj", modeAdj);
+  printAndDelay("selecteurMode", selecteurMode);
+  printAndDelay("selecteurModeAdj", selecteurModeAdj);
+  printAndDelay("etatPompe1Pin", etatPompe1Pin);
+  printAndDelay("etatPompe2Pin", etatPompe2Pin);
+  printAndDelay("bpPompe1", bpPompe1);
+  printAndDelay("bpPompe2", bpPompe2);
+  printAndDelay("bpAdjPlus", bpAdjPlus);
+  printAndDelay("bpAdjMoins", bpAdjMoins);
 
   if ((interSelecteurMode) == LOW) {  // Selecteur Mode
     modeManuel = false;               // Mode manuel off
