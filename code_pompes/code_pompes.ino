@@ -68,17 +68,17 @@ void loop() {
   Serial.println("modeManuel");
   Serial.println(modeManuel);
   Serial.println("------");
-  delay(1000);
+  delay(100);
 
   Serial.println("modeAuto");
   Serial.println(modeAuto);
   Serial.println("------");
-  delay(1000);
+  delay(100);
 
   Serial.println("modeAdj");
   Serial.println(modeAdj);
   Serial.println("------");
-  delay(1000);
+  delay(100);
 
   if (digitalRead(broches[4]) == LOW) {  // Selecteur Mode
     modeManuel = false;                  // Mode manuel off
