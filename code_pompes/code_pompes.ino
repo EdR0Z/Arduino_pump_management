@@ -46,14 +46,6 @@ void setup() {
   // Initialisation des fonctions du lcd
 }
 
-void printAndDelay(const char* label, int value) {
-  Serial.print(label);
-  Serial.print(":");
-  Serial.print(value);
-  Serial.println("");
-  delay(500);
-}
-
 void loop() {
 
 
