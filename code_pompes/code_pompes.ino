@@ -9,8 +9,8 @@ const int boutonPoussoirAdjPlus = 8;
 const int boutonPoussoirAdjMoins = 9;
 
 // Variables
-const int seuilPompe1 = 50;
-const int seuilPompe2 = 30;
+int seuilPompe1 = 50;
+int seuilPompe2 = 30;
 const int max_distance = 400;
 
 // États
@@ -25,6 +25,8 @@ int bpAdjMoins = 0;
 int modeManuel = 0;
 int modeAuto = 1;
 int modeAdj = 0;
+int test = 0;
+int printTest = 0;
 
 // Modules externes
 
@@ -42,11 +44,37 @@ void setup() {
 
   // Les broches sont LOW au démarrage
   digitalWrite(LED_BUILTIN, LOW);
+}
+// Initialisation des fonctions du lcd
 
-  // Initialisation des fonctions du lcd
+void printAndDelay(const char* label, int value) {
+  Serial.print(label);
+  Serial.print(":");
+  Serial.print(value);
+  Serial.println("");
+  delay(10);
 }
 
+
+
+
+
+
 void loop() {
+
+  //  Debug
+  //  printAndDelay("modeManuel", modeManuel);
+  //  printAndDelay("modeAuto", modeAuto);
+  //printAndDelay("modeAdj", modeAdj);
+  //printAndDelay("selecteurMode", selecteurMode);
+  //printAndDelay("selecteurModeAdj", selecteurModeAdj);
+  //  printAndDelay("etatPompe1Pin", etatPompe1Pin);
+  //  printAndDelay("etatPompe2Pin", etatPompe2Pin);
+  //printAndDelay("bpPompe1", bpPompe1);
+  //  printAndDelay("bpPompe2", bpPompe2);
+  //printAndDelay("bpAdjPlus", bpAdjPlus);
+  //printAndDelay("bpAdjMoins", bpAdjMoins);
+
 
   selecteurMode = digitalRead(interSelecteurMode);  //Lecture sélecteur mode
   selecteurModeAdj = digitalRead(interSelecteurModeAdj);
@@ -63,16 +91,16 @@ void loop() {
     //delay(250);
   }
 
-  if ((interSelecteurModeAdj) == LOW) {  // Selecteur modeAdj
-    modeAdj = 0;                         // Mode Adj off
-                                         //delay(250);
+  if ((selecteurModeAdj) == LOW) {  // Selecteur modeAdj
+    modeAdj = 0;                    // Mode Adj off
+                                    //delay(250);
 
-  } else if ((interSelecteurModeAdj) == HIGH) {  // Selecteur modeAdj
-    modeAdj = 1;                                 // Mode Adj on
-                                                 //delay(250);
+  } else if ((selecteurModeAdj) == HIGH) {  // Selecteur modeAdj
+    modeAdj = 1;                            // Mode Adj on
+                                            //delay(250);
   }
 
-  if (modeManuel) {
+  if ((modeManuel) && (!modeAdj)) {  // mode manu et pas mode d'ajustement
 
     bpPompe1 = digitalRead(boutonPoussoirPompe1);  //Lecture poussoir pompe 1
     bpPompe2 = digitalRead(boutonPoussoirPompe2);  //Lecture poussoir pompe 2
@@ -95,5 +123,47 @@ void loop() {
       digitalWrite(pompe2Pin, HIGH);  // pompe2Pin
       etatPompe2Pin = 1;
     }
+  }
+
+  // fonction + et - ok pour la seuil pompe 1
+  //*********************************************
+  // Si on est en mode ajustement et en mode Manuel
+  // alors on peut effectuer l'ajustement de
+  // seuilPompe1 avec les BP -> de la pompe1 et celui d'ajustement
+  // si bpPompe1 et bpAdjPlus -> seuilPompe1=seuilPompe1 + 1
+  // si bpPompe1 et bpAdjMoins -> seuilPompe1=seuilPompe1 - 1
+  //********************************************
+
+  if ((modeManuel) && (modeAdj)) {  // mode manu et mode d'ajustement
+
+    bpAdjPlus = digitalRead(boutonPoussoirAdjPlus);    //Lecture poussoir adj plus
+    bpAdjMoins = digitalRead(boutonPoussoirAdjMoins);  //Lecture poussoir adj moins
+
+    bpPompe1 = digitalRead(boutonPoussoirPompe1);  //Lecture poussoir pompe 1
+    bpPompe2 = digitalRead(boutonPoussoirPompe2);  //Lecture poussoir pompe 2
+
+    if ((bpAdjPlus) && (bpPompe1))  // je rajouterais bien la condition pompe1 ou 2 mais avec la souris
+                                    //je peut pas appuyer sur les deux boutons en même temps
+                                    // il faudrait mettre un inter pour sur bppompe1 ou 2 pour simuler l'appui.
+                                    // Inter rajouté, la suite demain
+    {
+      bpAdjPlus = 1;
+      seuilPompe1 = seuilPompe1 + 1;
+    } else if ((bpAdjMoins) == 1) {
+      seuilPompe1 = seuilPompe1 - 1;
+      bpAdjPlus = 0;
+    }
+    Serial.print("seuilPompe1 : ");
+    Serial.println(seuilPompe1);
+    //     else if ((test) < 5)
+    //     {
+    //      digitalWrite(pompe2Pin, LOW);  // Pompe2 sur OFF pompe2Pin
+    //      etatPompe2Pin = 0;
+    //     }
+    //     else if ((test) >= 5)
+    //     {
+    //      digitalWrite(pompe2Pin, HIGH);  // Pompe2 sur ON pompe2Pin
+    //      etatPompe2Pin = 1;
+    //     }
   }
 }
