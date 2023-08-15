@@ -58,7 +58,11 @@ void setup() {
   lcd.backlight();
 }
 
-void debug() {
+void loop() {
+
+  distance = sonar.ping_cm();
+
+  //  Debug
   Serial.println("modeManuel");
   Serial.println(modeManuel);
   Serial.println("------");
@@ -103,13 +107,6 @@ void debug() {
   Serial.println(bpAdjMoins);
   Serial.println("------");
   delay(1000);
-}
-
-void loop() {
-
-  distance = sonar.ping_cm();
-
-  debug();
 
   if (digitalRead(interSelecteurMode) == LOW) {  // Selecteur Mode
     modeManuel = false;                          // Mode manuel off
