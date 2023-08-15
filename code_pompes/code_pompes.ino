@@ -155,15 +155,5 @@ void loop() {
     }
     Serial.print("seuilPompe1 : ");
     Serial.println(seuilPompe1);
-    //     else if ((test) < 5)
-    //     {
-    //      digitalWrite(pompe2Pin, LOW);  // Pompe2 sur OFF pompe2Pin
-    //      etatPompe2Pin = 0;
-    //     }
-    //     else if ((test) >= 5)
-    //     {
-    //      digitalWrite(pompe2Pin, HIGH);  // Pompe2 sur ON pompe2Pin
-    //      etatPompe2Pin = 1;
-    //     }
   }
 }
