@@ -48,15 +48,13 @@ void setup() {
 
 void loop() {
 
-
   selecteurMode = digitalRead(interSelecteurMode);  //Lecture sélecteur mode
   selecteurModeAdj = digitalRead(interSelecteurModeAdj);
 
 
-  if ((selecteurMode) == LOW)  // Selecteur de Mode
-  {
-    modeManuel = 0;                    // Mode manuel off
-    modeAuto = 1;                      // Mode auto on
+  if ((selecteurMode) == LOW) {  // Selecteur de Mode
+    modeManuel = 0;              // Mode manuel off
+    modeAuto = 1;                // Mode auto on
     //delay(250);
   } else if ((selecteurMode) == HIGH)  // Selecteur Mode
   {
@@ -65,14 +63,13 @@ void loop() {
     //delay(250);
   }
 
-  if ((interSelecteurModeAdj) == LOW)  // Selecteur modeAdj
-  {
-    modeAdj = 0;  // Mode Adj off
-    //delay(250);
-  } else if ((interSelecteurModeAdj) == HIGH)  // Selecteur modeAdj
-  {
-    modeAdj = 1;  // Mode Adj on
-   //delay(250);
+  if ((interSelecteurModeAdj) == LOW) {  // Selecteur modeAdj
+    modeAdj = 0;                         // Mode Adj off
+                                         //delay(250);
+
+  } else if ((interSelecteurModeAdj) == HIGH) {  // Selecteur modeAdj
+    modeAdj = 1;                                 // Mode Adj on
+                                                 //delay(250);
   }
 
   if (modeManuel) {
