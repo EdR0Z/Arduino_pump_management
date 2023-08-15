@@ -85,17 +85,17 @@ void loop() {
     modeManuel = false;               // Mode manuel off
     modeAuto = true;                  // Mode auto on
     delay(250);
-  } else {
-    modeManuel = true;  // Mode manuel on
-    modeAuto = false;   // Mode auto off
+  } else if ((interSelecteurMode) == HIGH) {  // Selecteur Mode
+    modeManuel = true;                        // Mode manuel on
+    modeAuto = false;                         // Mode auto off
     delay(250);
   }
 
   if ((interSelecteurModeAdj) == LOW) {  // Selecteur modeAdj
     modeAdj = false;                     // Mode Adj off
     delay(250);
-  } else {
-    modeAdj = true;  // Mode Adj on
+  } else if ((interSelecteurModeAdj) == HIGH) {  // Selecteur modeAdj
+    modeAdj = true;                              // Mode Adj on
     delay(250);
   }
 
