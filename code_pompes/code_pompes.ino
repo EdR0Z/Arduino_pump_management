@@ -108,9 +108,9 @@ void loop() {
   Serial.println("------");
   delay(1000);
 
-  if (digitalRead(interSelecteurMode) == LOW) {  // Selecteur Mode
-    modeManuel = false;                          // Mode manuel off
-    modeAuto = true;                             // Mode auto on
+  if ((interSelecteurMode) == LOW) {  // Selecteur Mode
+    modeManuel = false;               // Mode manuel off
+    modeAuto = true;                  // Mode auto on
     delay(250);
   } else {
     modeManuel = true;  // Mode manuel on
@@ -118,29 +118,29 @@ void loop() {
     delay(250);
   }
 
-  if (digitalRead(interSelecteurModeAdj) == LOW) {  // Selecteur modeAdj
-    modeAdj = false;
+  if ((interSelecteurModeAdj) == LOW) {  // Selecteur modeAdj
+    modeAdj = false;                     // Mode Adj off
     delay(250);
   } else {
-    modeAdj = true;
+    modeAdj = true;  // Mode Adj on
     delay(250);
   }
 
 
   if (modeManuel) {
-    if (boutonPoussoirPompe1 == LOW) {  // boutonPoussoirPompe1
-      digitalWrite(pompe1Pin, LOW);     // pompe1Pin
+    if ((boutonPoussoirPompe1) == LOW) {  // boutonPoussoirPompe1
+      digitalWrite(pompe1Pin, LOW);       // pompe1Pin
       etatPompe1Pin = false;
-    } else {
-      digitalWrite(pompe1Pin, HIGH);  // pompe1Pin
+    } else if ((boutonPoussoirPompe1) == HIGH) {  // boutonPoussoirPompe1 {
+      digitalWrite(pompe1Pin, HIGH);              // pompe1Pin
       etatPompe1Pin = true;
     }
 
-    if (boutonPoussoirPompe2 == LOW) {  // boutonPoussoirPompe2
-      digitalWrite(pompe2Pin, LOW);     // pompe2Pin
+    if ((boutonPoussoirPompe2) == LOW) {  // boutonPoussoirPompe2
+      digitalWrite(pompe2Pin, LOW);       // pompe2Pin
       etatPompe2Pin = false;
-    } else {
-      digitalWrite(pompe2Pin, HIGH);  // pompe2Pin
+    } else if ((boutonPoussoirPompe2) == HIGH) {  // boutonPoussoirPompe2
+      digitalWrite(pompe2Pin, HIGH);              // pompe2Pin
       etatPompe2Pin = true;
     }
   }
