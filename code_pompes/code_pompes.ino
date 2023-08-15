@@ -25,8 +25,6 @@ int bpAdjMoins = 0;
 int modeManuel = 0;
 int modeAuto = 1;
 int modeAdj = 0;
-int test = 0;
-int printTest = 0;
 
 // Modules externes
 
