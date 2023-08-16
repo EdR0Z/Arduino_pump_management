@@ -1,3 +1,6 @@
+#include <NewPing.h>
+
+
 // Broches
 const int pompe1Pin = 2;
 const int pompe2Pin = 3;
@@ -7,11 +10,13 @@ const int interSelecteurMode = 6;
 const int interSelecteurModeAdj = 7;
 const int boutonPoussoirAdjPlus = 8;
 const int boutonPoussoirAdjMoins = 9;
+const int TRIGGER_PIN = 10;
+const int ECHO_PIN = 11;
 
 // Variables
 int seuilPompe1 = 5;
 int seuilPompe2 = 15;
-const int max_distance = 400;
+const int MAX_DISTANCE = 400;
 
 // États
 int selecteurMode = 0;
@@ -25,10 +30,14 @@ int bpAdjMoins = 0;
 int modeManuel = 0;
 int modeAuto = 1;
 int modeAdj = 0;
+int distance = 0;
 
 // Modules externes
+NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
 
 void setup() {
+  Serial.begin(9600);
+
   pinMode(pompe1Pin, OUTPUT);
   pinMode(pompe2Pin, OUTPUT);
   pinMode(boutonPoussoirPompe1, INPUT);
@@ -38,7 +47,10 @@ void setup() {
   pinMode(boutonPoussoirAdjPlus, INPUT);
   pinMode(boutonPoussoirAdjMoins, INPUT);
   pinMode(LED_BUILTIN, OUTPUT);
-  Serial.begin(9600);
+
+  // Broches capteur ultrasoons HC-SR04
+  pinMode(11, OUTPUT);
+  pinMode(12, OUTPUT);
 
   // Les broches sont LOW au démarrage
   digitalWrite(LED_BUILTIN, LOW);
@@ -68,7 +80,7 @@ void loop() {
   //printAndDelay("bpAdjPlus", bpAdjPlus);
   //printAndDelay("bpAdjMoins", bpAdjMoins);
 
-
+  distance = sonar.ping_cm();                       // Lire la distance en mode automatique
   selecteurMode = digitalRead(interSelecteurMode);  //Lecture sélecteur mode
   selecteurModeAdj = digitalRead(interSelecteurModeAdj);
 
@@ -77,9 +89,8 @@ void loop() {
     modeManuel = 0;                      // Mode manuel off
     modeAuto = 1;                        // Mode auto on
   } else if ((selecteurMode) == HIGH) {  // Selecteur Mode
-
-    modeManuel = 1;  // Mode manuel on
-    modeAuto = 0;    // Mode auto off
+    modeManuel = 1;                      // Mode manuel on
+    modeAuto = 0;                        // Mode auto off
   }
 
   if ((selecteurModeAdj) == LOW) {  // Selecteur modeAdj
@@ -94,17 +105,14 @@ void loop() {
     bpPompe1 = digitalRead(boutonPoussoirPompe1);  //Lecture poussoir pompe 1
     bpPompe2 = digitalRead(boutonPoussoirPompe2);  //Lecture poussoir pompe 2
     if ((bpPompe1) == 0) {                         // boutonPoussoirPompe1 pas actionné
-
-      digitalWrite(pompe1Pin, LOW);  // Pompe1 sur OFF pompe1Pin
+      digitalWrite(pompe1Pin, LOW);                // Pompe1 sur OFF pompe1Pin
       etatPompe1Pin = 0;
-    } else if ((bpPompe1) == 1) {  // boutonPoussoirPompe1 actionné
-
+    } else if ((bpPompe1) == 1) {     // boutonPoussoirPompe1 actionné
       digitalWrite(pompe1Pin, HIGH);  // Pompe1 sur ON pompe1Pin
       etatPompe1Pin = 1;
     }
 
-    if ((bpPompe2) == LOW) {  // boutonPoussoirPompe2
-
+    if ((bpPompe2) == LOW) {         // boutonPoussoirPompe2
       digitalWrite(pompe2Pin, LOW);  // pompe2Pin
       etatPompe2Pin = 0;
     } else if ((bpPompe2) == HIGH)  // boutonPoussoirPompe2
@@ -146,11 +154,21 @@ void loop() {
       seuilPompe2 = seuilPompe2 - 1;
       bpAdjPlus = 0;
     }
-    Serial.print("seuilPompe1 : ");
-    Serial.println(seuilPompe1);
-    delay(100);
-    Serial.print("seuilPompe2 : ");
-    Serial.println(seuilPompe2);
-    delay(100);
   }
+
+  if ((modeAuto) && (!modeManuel)) {  // mode auto et pas mode manu
+    if ((distance) <= (seuilPompe1)) {
+      digitalWrite(pompe1Pin, HIGH);  // Pompe1 sur ON pompe1Pin
+      etatPompe1Pin = 1;
+    } else if ((distance) > (seuilPompe1)) {
+      digitalWrite(pompe1Pin, LOW);  // Pompe1 sur ON pompe1Pin
+      etatPompe1Pin = 0;
+    }
+  }
+  Serial.print("seuilPompe1 : ");
+  Serial.println(seuilPompe1);
+  delay(100);
+  Serial.print("seuilPompe2 : ");
+  Serial.println(seuilPompe2);
+  delay(100);
 }
