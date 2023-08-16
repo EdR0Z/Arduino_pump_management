@@ -56,6 +56,15 @@ void setup() {
   // Les broches sont LOW au démarrage
   digitalWrite(LED_BUILTIN, LOW);
   digitalWrite(TRIGGER_PIN, LOW);  // La broche TRIGGER doit être à LOW au repos
+
+  //  Séquence de démarrage
+  digitalWrite(LED_BUILTIN, HIGH);
+  delay(30);
+  digitalWrite(LED_BUILTIN, LOW);
+  delay(30);
+  digitalWrite(LED_BUILTIN, HIGH);
+  delay(30);
+  digitalWrite(LED_BUILTIN, LOW);
 }
 
 void printAndDelay(const char* label, int value) {
@@ -82,9 +91,9 @@ void loop() {
   //printAndDelay("bpAdjMoins", bpAdjMoins);
 
   digitalWrite(LED_BUILTIN, HIGH);
-  delay(100);
+  delay(50);
   digitalWrite(LED_BUILTIN, LOW);
-  delay(100);
+  delay(50);
 
   distance = sonar.ping_cm();                       // Lire la distance en mode automatique
   selecteurMode = digitalRead(interSelecteurMode);  //Lecture sélecteur mode
@@ -165,11 +174,10 @@ void loop() {
   }
 
   if ((distance) <= (seuilPompe2)) {
-      digitalWrite(pompe2Pin, HIGH);  // Pompe1 sur ON pompe1Pin
-      etatPompe2Pin = 1;
-    } else if ((distance) > (seuilPompe2)) {
-      digitalWrite(pompe2Pin, LOW);  // Pompe1 sur ON pompe1Pin
-      etatPompe2Pin = 0;
-    }
+    digitalWrite(pompe2Pin, HIGH);  // Pompe1 sur ON pompe1Pin
+    etatPompe2Pin = 1;
+  } else if ((distance) > (seuilPompe2)) {
+    digitalWrite(pompe2Pin, LOW);  // Pompe1 sur ON pompe1Pin
+    etatPompe2Pin = 0;
   }
 }
