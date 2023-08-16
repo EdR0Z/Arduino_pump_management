@@ -1,6 +1,5 @@
 #include <NewPing.h>
 
-
 // Broches
 const int pompe1Pin = 2;
 const int pompe2Pin = 3;
@@ -46,18 +45,12 @@ void setup() {
   pinMode(interSelecteurModeAdj, INPUT);
   pinMode(boutonPoussoirAdjPlus, INPUT);
   pinMode(boutonPoussoirAdjMoins, INPUT);
-  pinMode(LED_BUILTIN, OUTPUT);
-
-
-  // Broches capteur ultrasoons HC-SR04
   pinMode(ECHO_PIN, INPUT);
   pinMode(TRIGGER_PIN, OUTPUT);
-
-  // Les broches sont LOW au démarrage
   digitalWrite(LED_BUILTIN, LOW);
-  digitalWrite(TRIGGER_PIN, LOW);  // La broche TRIGGER doit être à LOW au repos
+  digitalWrite(TRIGGER_PIN, LOW);
 
-  //  Séquence de démarrage
+
   digitalWrite(LED_BUILTIN, HIGH);
   delay(30);
   digitalWrite(LED_BUILTIN, LOW);
@@ -77,59 +70,46 @@ void printAndDelay(const char* label, int value) {
 
 void loop() {
 
-  //  Debug
-  //printAndDelay("modeManuel", modeManuel);
-  //printAndDelay("modeAuto", modeAuto);
-  //printAndDelay("modeAdj", modeAdj);
-  //printAndDelay("selecteurMode", selecteurMode);
-  //printAndDelay("selecteurModeAdj", selecteurModeAdj);
-  //printAndDelay("etatPompe1Pin", etatPompe1Pin);
-  //printAndDelay("etatPompe2Pin", etatPompe2Pin);
-  //printAndDelay("bpPompe1", bpPompe1);
-  //printAndDelay("bpPompe2", bpPompe2);
-  //printAndDelay("bpAdjPlus", bpAdjPlus);
-  //printAndDelay("bpAdjMoins", bpAdjMoins);
-
   digitalWrite(LED_BUILTIN, HIGH);
   delay(50);
   digitalWrite(LED_BUILTIN, LOW);
   delay(50);
 
-  distance = sonar.ping_cm();                       // Lire la distance en mode automatique
-  selecteurMode = digitalRead(interSelecteurMode);  //Lecture sélecteur mode
+  distance = sonar.ping_cm();
+  selecteurMode = digitalRead(interSelecteurMode);
   selecteurModeAdj = digitalRead(interSelecteurModeAdj);
 
-  if ((selecteurMode) == LOW) {          // Selecteur de Mode
-    modeManuel = 0;                      // Mode manuel off
-    modeAuto = 1;                        // Mode auto on
-  } else if ((selecteurMode) == HIGH) {  // Selecteur Mode
-    modeManuel = 1;                      // Mode manuel on
-    modeAuto = 0;                        // Mode auto off
+  if ((selecteurMode) == 0) {
+    modeManuel = 0;
+    modeAuto = 1;
+  } else if ((selecteurMode) == 1) {
+    modeManuel = 1;
+    modeAuto = 0;
   }
 
-  if ((selecteurModeAdj) == LOW) {          // Selecteur modeAdj
-    modeAdj = 0;                            // Mode Adj off
-  } else if ((selecteurModeAdj) == HIGH) {  // Selecteur modeAdj
-    modeAdj = 1;                            // Mode Adj on
+  if ((selecteurModeAdj) == 0) {
+    modeAdj = 0;
+  } else if ((selecteurModeAdj) == 1) {
+    modeAdj = 1;
   }
 
   if ((modeManuel) && (!modeAdj)) {                // mode manu et pas mode d'ajustement
     bpPompe1 = digitalRead(boutonPoussoirPompe1);  //Lecture poussoir pompe 1
     bpPompe2 = digitalRead(boutonPoussoirPompe2);  //Lecture poussoir pompe 2
-    if ((bpPompe1) == 0) {                         // boutonPoussoirPompe1 pas actionné
-      digitalWrite(pompe1Pin, LOW);                // Pompe1 sur OFF pompe1Pin
+
+    if ((bpPompe1) == 0) {           // boutonPoussoirPompe1 pas actionné
+      digitalWrite(pompe1Pin, LOW);  // Pompe1 sur OFF pompe1Pin
       etatPompe1Pin = 0;
     } else if ((bpPompe1) == 1) {     // boutonPoussoirPompe1 actionné
       digitalWrite(pompe1Pin, HIGH);  // Pompe1 sur ON pompe1Pin
       etatPompe1Pin = 1;
     }
 
-    if ((bpPompe2) == LOW) {         // boutonPoussoirPompe2
-      digitalWrite(pompe2Pin, LOW);  // pompe2Pin
+    if ((bpPompe2) == 0) {           // boutonPoussoirPompe1 pas actionné
+      digitalWrite(pompe2Pin, LOW);  // Pompe1 sur OFF pompe1Pin
       etatPompe2Pin = 0;
-    } else if ((bpPompe2) == HIGH)  // boutonPoussoirPompe2
-    {
-      digitalWrite(pompe2Pin, HIGH);  // pompe2Pin
+    } else if ((bpPompe2) == 1) {     // boutonPoussoirPompe1 actionné
+      digitalWrite(pompe2Pin, HIGH);  // Pompe1 sur ON pompe1Pin
       etatPompe2Pin = 1;
     }
   }
@@ -163,7 +143,7 @@ void loop() {
     }
   }
 
-  if ((modeAuto) && (!modeManuel) && (!modeAdj)) {  // mode auto et pas mode manu ni adj
+  if ((modeAuto) && (!modeManuel)) {  // mode auto et pas mode manu
     if ((distance) <= (seuilPompe1)) {
       digitalWrite(pompe1Pin, HIGH);  // Pompe1 sur ON pompe1Pin
       etatPompe1Pin = 1;
@@ -171,13 +151,13 @@ void loop() {
       digitalWrite(pompe1Pin, LOW);  // Pompe1 sur ON pompe1Pin
       etatPompe1Pin = 0;
     }
-  }
 
-  if ((distance) <= (seuilPompe2)) {
-    digitalWrite(pompe2Pin, HIGH);  // Pompe1 sur ON pompe1Pin
-    etatPompe2Pin = 1;
-  } else if ((distance) > (seuilPompe2)) {
-    digitalWrite(pompe2Pin, LOW);  // Pompe1 sur ON pompe1Pin
-    etatPompe2Pin = 0;
+    if ((distance) <= (seuilPompe2)) {
+      digitalWrite(pompe2Pin, HIGH);  // Pompe1 sur ON pompe1Pin
+      etatPompe2Pin = 1;
+    } else if ((distance) > (seuilPompe2)) {
+      digitalWrite(pompe2Pin, LOW);  // Pompe1 sur ON pompe1Pin
+      etatPompe2Pin = 0;
+    }
   }
 }
