@@ -127,6 +127,11 @@ void loop() {
     bpPompe1 = digitalRead(boutonPoussoirPompe1);  //Lecture poussoir pompe 1
     bpPompe2 = digitalRead(boutonPoussoirPompe2);  //Lecture poussoir pompe 2
 
+    digitalWrite(pompe1Pin, LOW);  // Pompe1 sur OFF pompe1Pin
+    etatPompe1Pin = 0;
+    digitalWrite(pompe2Pin, LOW);  // pompe2 sur OFF pompe2Pin
+    etatPompe2Pin = 0;
+
     if ((bpAdjPlus) && (bpPompe1)) {
       bpAdjPlus = 1;
       seuilPompe1 = seuilPompe1 + 1;
