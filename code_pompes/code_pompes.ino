@@ -36,9 +36,8 @@ int distance = 0;
 NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
 
 void setup() {
-
   Serial.begin(9600);
-
+  pinMode(LED_BUILTIN, OUTPUT);
   pinMode(pompe1Pin, OUTPUT);
   pinMode(pompe2Pin, OUTPUT);
   pinMode(boutonPoussoirPompe1, INPUT);
@@ -47,10 +46,11 @@ void setup() {
   pinMode(interSelecteurModeAdj, INPUT);
   pinMode(boutonPoussoirAdjPlus, INPUT);
   pinMode(boutonPoussoirAdjMoins, INPUT);
-  pinMode(ECHO_PIN, INPUT);
+  pinMode(LED_BUILTIN, OUTPUT);
+
 
   // Broches capteur ultrasoons HC-SR04
-  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(ECHO_PIN, INPUT);
   pinMode(TRIGGER_PIN, OUTPUT);
 
   // Les broches sont LOW au démarrage
@@ -80,6 +80,11 @@ void loop() {
   //printAndDelay("bpPompe2", bpPompe2);
   //printAndDelay("bpAdjPlus", bpAdjPlus);
   //printAndDelay("bpAdjMoins", bpAdjMoins);
+
+  digitalWrite(LED_BUILTIN, HIGH);
+  delay(100);
+  digitalWrite(LED_BUILTIN, LOW);
+  delay(100);
 
   distance = sonar.ping_cm();                       // Lire la distance en mode automatique
   selecteurMode = digitalRead(interSelecteurMode);  //Lecture sélecteur mode
@@ -149,13 +154,22 @@ void loop() {
     }
   }
 
-  if ((modeAuto) && (!modeManuel)) {  // mode auto et pas mode manu
+  if ((modeAuto) && (!modeManuel) && (!modeAdj)) {  // mode auto et pas mode manu ni adj
     if ((distance) <= (seuilPompe1)) {
       digitalWrite(pompe1Pin, HIGH);  // Pompe1 sur ON pompe1Pin
       etatPompe1Pin = 1;
     } else if ((distance) > (seuilPompe1)) {
       digitalWrite(pompe1Pin, LOW);  // Pompe1 sur ON pompe1Pin
       etatPompe1Pin = 0;
+    }
+  }
+
+  if ((distance) <= (seuilPompe2)) {
+      digitalWrite(pompe2Pin, HIGH);  // Pompe1 sur ON pompe1Pin
+      etatPompe2Pin = 1;
+    } else if ((distance) > (seuilPompe2)) {
+      digitalWrite(pompe2Pin, LOW);  // Pompe1 sur ON pompe1Pin
+      etatPompe2Pin = 0;
     }
   }
 }
