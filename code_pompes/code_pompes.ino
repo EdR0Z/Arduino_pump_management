@@ -50,13 +50,8 @@ void printAndDelay(const char* label, int value) {
   Serial.print(":");
   Serial.print(value);
   Serial.println("");
-  delay(10);
+  delay(100);
 }
-
-
-
-
-
 
 void loop() {
 
@@ -78,42 +73,38 @@ void loop() {
   selecteurModeAdj = digitalRead(interSelecteurModeAdj);
 
 
-  if ((selecteurMode) == LOW) {  // Selecteur de Mode
-    modeManuel = 0;              // Mode manuel off
-    modeAuto = 1;                // Mode auto on
-    //delay(250);
-  } else if ((selecteurMode) == HIGH)  // Selecteur Mode
-  {
+  if ((selecteurMode) == LOW) {          // Selecteur de Mode
+    modeManuel = 0;                      // Mode manuel off
+    modeAuto = 1;                        // Mode auto on
+  } else if ((selecteurMode) == HIGH) {  // Selecteur Mode
+
     modeManuel = 1;  // Mode manuel on
     modeAuto = 0;    // Mode auto off
-    //delay(250);
   }
 
   if ((selecteurModeAdj) == LOW) {  // Selecteur modeAdj
     modeAdj = 0;                    // Mode Adj off
-                                    //delay(250);
 
   } else if ((selecteurModeAdj) == HIGH) {  // Selecteur modeAdj
     modeAdj = 1;                            // Mode Adj on
-                                            //delay(250);
   }
 
   if ((modeManuel) && (!modeAdj)) {  // mode manu et pas mode d'ajustement
 
     bpPompe1 = digitalRead(boutonPoussoirPompe1);  //Lecture poussoir pompe 1
     bpPompe2 = digitalRead(boutonPoussoirPompe2);  //Lecture poussoir pompe 2
-    if ((bpPompe1) == 0)                           // boutonPoussoirPompe1 pas actionné
-    {
+    if ((bpPompe1) == 0) {                         // boutonPoussoirPompe1 pas actionné
+
       digitalWrite(pompe1Pin, LOW);  // Pompe1 sur OFF pompe1Pin
       etatPompe1Pin = 0;
-    } else if ((bpPompe1) == 1)  // boutonPoussoirPompe1 actionné
-    {
+    } else if ((bpPompe1) == 1) {  // boutonPoussoirPompe1 actionné
+
       digitalWrite(pompe1Pin, HIGH);  // Pompe1 sur ON pompe1Pin
       etatPompe1Pin = 1;
     }
 
-    if ((bpPompe2) == LOW)  // boutonPoussoirPompe2
-    {
+    if ((bpPompe2) == LOW) {  // boutonPoussoirPompe2
+
       digitalWrite(pompe2Pin, LOW);  // pompe2Pin
       etatPompe2Pin = 0;
     } else if ((bpPompe2) == HIGH)  // boutonPoussoirPompe2
@@ -140,18 +131,25 @@ void loop() {
     bpPompe1 = digitalRead(boutonPoussoirPompe1);  //Lecture poussoir pompe 1
     bpPompe2 = digitalRead(boutonPoussoirPompe2);  //Lecture poussoir pompe 2
 
-    if ((bpAdjPlus) && (bpPompe1))  // je rajouterais bien la condition pompe1 ou 2 mais avec la souris
-                                    //je peut pas appuyer sur les deux boutons en même temps
-                                    // il faudrait mettre un inter pour sur bppompe1 ou 2 pour simuler l'appui.
-                                    // Inter rajouté, la suite demain
-    {
+    if ((bpAdjPlus) && (bpPompe1)) {
       bpAdjPlus = 1;
       seuilPompe1 = seuilPompe1 + 1;
     } else if ((bpAdjMoins) == 1) {
       seuilPompe1 = seuilPompe1 - 1;
       bpAdjPlus = 0;
     }
+
+    if ((bpAdjPlus) && (bpPompe2)) {
+      bpAdjPlus = 1;
+      seuilPompe2 = seuilPompe2 + 1;
+    } else if ((bpAdjMoins) == 1) {
+      seuilPompe2 = seuilPompe2 - 1;
+      bpAdjPlus = 0;
+    }
     Serial.print("seuilPompe1 : ");
     Serial.println(seuilPompe1);
+    Serial.println("");
+    Serial.print("seuilPompe2 : ");
+    Serial.println(seuilPompe2);
   }
 }
