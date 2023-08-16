@@ -153,10 +153,4 @@ void loop() {
       etatPompe1Pin = 0;
     }
   }
-  Serial.print("seuilPompe1 : ");
-  Serial.println(seuilPompe1);
-  delay(100);
-  Serial.print("seuilPompe2 : ");
-  Serial.println(seuilPompe2);
-  delay(100);
 }
