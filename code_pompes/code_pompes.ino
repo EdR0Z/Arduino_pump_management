@@ -47,6 +47,7 @@ void setup() {
   pinMode(boutonPoussoirAdjPlus, INPUT);
   pinMode(boutonPoussoirAdjMoins, INPUT);
   pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(ECHO_PIN, INPUT);
 
   // Broches capteur ultrasoons HC-SR04
   pinMode(11, OUTPUT);
@@ -54,8 +55,8 @@ void setup() {
 
   // Les broches sont LOW au démarrage
   digitalWrite(LED_BUILTIN, LOW);
+  digitalWrite(TRIGGER_PIN, LOW); // La broche TRIGGER doit être à LOW au repos
 }
-// Initialisation des fonctions du lcd
 
 void printAndDelay(const char* label, int value) {
   Serial.print(label);
@@ -68,22 +69,21 @@ void printAndDelay(const char* label, int value) {
 void loop() {
 
   //  Debug
-  //  printAndDelay("modeManuel", modeManuel);
-  //  printAndDelay("modeAuto", modeAuto);
+  //printAndDelay("modeManuel", modeManuel);
+  //printAndDelay("modeAuto", modeAuto);
   //printAndDelay("modeAdj", modeAdj);
   //printAndDelay("selecteurMode", selecteurMode);
   //printAndDelay("selecteurModeAdj", selecteurModeAdj);
-  //  printAndDelay("etatPompe1Pin", etatPompe1Pin);
-  //  printAndDelay("etatPompe2Pin", etatPompe2Pin);
+  //printAndDelay("etatPompe1Pin", etatPompe1Pin);
+  //printAndDelay("etatPompe2Pin", etatPompe2Pin);
   //printAndDelay("bpPompe1", bpPompe1);
-  //  printAndDelay("bpPompe2", bpPompe2);
+  //printAndDelay("bpPompe2", bpPompe2);
   //printAndDelay("bpAdjPlus", bpAdjPlus);
   //printAndDelay("bpAdjMoins", bpAdjMoins);
 
   distance = sonar.ping_cm();                       // Lire la distance en mode automatique
   selecteurMode = digitalRead(interSelecteurMode);  //Lecture sélecteur mode
   selecteurModeAdj = digitalRead(interSelecteurModeAdj);
-
 
   if ((selecteurMode) == LOW) {          // Selecteur de Mode
     modeManuel = 0;                      // Mode manuel off
@@ -95,7 +95,6 @@ void loop() {
 
   if ((selecteurModeAdj) == LOW) {  // Selecteur modeAdj
     modeAdj = 0;                    // Mode Adj off
-
   } else if ((selecteurModeAdj) == HIGH) {  // Selecteur modeAdj
     modeAdj = 1;                            // Mode Adj on
   }
@@ -121,15 +120,6 @@ void loop() {
       etatPompe2Pin = 1;
     }
   }
-
-  // fonction + et - ok pour la seuil pompe 1
-  //*********************************************
-  // Si on est en mode ajustement et en mode Manuel
-  // alors on peut effectuer l'ajustement de
-  // seuilPompe1 avec les BP -> de la pompe1 et celui d'ajustement
-  // si bpPompe1 et bpAdjPlus -> seuilPompe1=seuilPompe1 + 1
-  // si bpPompe1 et bpAdjMoins -> seuilPompe1=seuilPompe1 - 1
-  //********************************************
 
   if ((modeManuel) && (modeAdj)) {  // mode manu et mode d'ajustement
 
