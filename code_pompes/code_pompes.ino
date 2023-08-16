@@ -47,6 +47,7 @@ void setup() {
   pinMode(boutonPoussoirAdjPlus, INPUT);
   pinMode(boutonPoussoirAdjMoins, INPUT);
   pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(TRIGGER_PIN, OUTPUT);
   pinMode(ECHO_PIN, INPUT);
 
   // Broches capteur ultrasoons HC-SR04
