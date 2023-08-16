@@ -134,7 +134,7 @@ void loop() {
     if ((bpAdjPlus) && (bpPompe1)) {
       bpAdjPlus = 1;
       seuilPompe1 = seuilPompe1 + 1;
-    } else if ((bpAdjMoins) == 1) {
+    } else if ((bpAdjMoins) && (bpPompe1)) {
       seuilPompe1 = seuilPompe1 - 1;
       bpAdjPlus = 0;
     }
@@ -142,7 +142,7 @@ void loop() {
     if ((bpAdjPlus) && (bpPompe2)) {
       bpAdjPlus = 1;
       seuilPompe2 = seuilPompe2 + 1;
-    } else if ((bpAdjMoins) == 1) {
+    } else if ((bpAdjMoins) && (bpPompe2)) {
       seuilPompe2 = seuilPompe2 - 1;
       bpAdjPlus = 0;
     }
