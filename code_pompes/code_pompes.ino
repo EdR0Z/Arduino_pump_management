@@ -8,8 +8,8 @@ const int boutonPoussoirPompe1 = 4;
 const int boutonPoussoirPompe2 = 5;
 const int interSelecteurMode = 6;
 const int interSelecteurModeAdj = 7;
-const int boutonPoussoirAdjPlus = 8;
-const int boutonPoussoirAdjMoins = 9;
+const int boutonPoussoirAdjMoins = 8;
+const int boutonPoussoirAdjPlus = 9;
 const int TRIGGER_PIN = 10;
 const int ECHO_PIN = 11;
 
@@ -36,6 +36,7 @@ int distance = 0;
 NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
 
 void setup() {
+
   Serial.begin(9600);
 
   pinMode(pompe1Pin, OUTPUT);
@@ -46,17 +47,15 @@ void setup() {
   pinMode(interSelecteurModeAdj, INPUT);
   pinMode(boutonPoussoirAdjPlus, INPUT);
   pinMode(boutonPoussoirAdjMoins, INPUT);
-  pinMode(LED_BUILTIN, OUTPUT);
-  pinMode(TRIGGER_PIN, OUTPUT);
   pinMode(ECHO_PIN, INPUT);
 
   // Broches capteur ultrasoons HC-SR04
-  pinMode(11, OUTPUT);
-  pinMode(12, OUTPUT);
+  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(TRIGGER_PIN, OUTPUT);
 
   // Les broches sont LOW au démarrage
   digitalWrite(LED_BUILTIN, LOW);
-  digitalWrite(TRIGGER_PIN, LOW); // La broche TRIGGER doit être à LOW au repos
+  digitalWrite(TRIGGER_PIN, LOW);  // La broche TRIGGER doit être à LOW au repos
 }
 
 void printAndDelay(const char* label, int value) {
@@ -94,14 +93,13 @@ void loop() {
     modeAuto = 0;                        // Mode auto off
   }
 
-  if ((selecteurModeAdj) == LOW) {  // Selecteur modeAdj
-    modeAdj = 0;                    // Mode Adj off
+  if ((selecteurModeAdj) == LOW) {          // Selecteur modeAdj
+    modeAdj = 0;                            // Mode Adj off
   } else if ((selecteurModeAdj) == HIGH) {  // Selecteur modeAdj
     modeAdj = 1;                            // Mode Adj on
   }
 
-  if ((modeManuel) && (!modeAdj)) {  // mode manu et pas mode d'ajustement
-
+  if ((modeManuel) && (!modeAdj)) {                // mode manu et pas mode d'ajustement
     bpPompe1 = digitalRead(boutonPoussoirPompe1);  //Lecture poussoir pompe 1
     bpPompe2 = digitalRead(boutonPoussoirPompe2);  //Lecture poussoir pompe 2
     if ((bpPompe1) == 0) {                         // boutonPoussoirPompe1 pas actionné
@@ -122,8 +120,7 @@ void loop() {
     }
   }
 
-  if ((modeManuel) && (modeAdj)) {  // mode manu et mode d'ajustement
-
+  if ((modeManuel) && (modeAdj)) {                     // mode manu et mode d'ajustement
     bpAdjPlus = digitalRead(boutonPoussoirAdjPlus);    //Lecture poussoir adj plus
     bpAdjMoins = digitalRead(boutonPoussoirAdjMoins);  //Lecture poussoir adj moins
 
