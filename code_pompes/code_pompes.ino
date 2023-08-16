@@ -9,8 +9,8 @@ const int boutonPoussoirAdjPlus = 8;
 const int boutonPoussoirAdjMoins = 9;
 
 // Variables
-int seuilPompe1 = 50;
-int seuilPompe2 = 30;
+int seuilPompe1 = 5;
+int seuilPompe2 = 15;
 const int max_distance = 400;
 
 // États
@@ -148,8 +148,9 @@ void loop() {
     }
     Serial.print("seuilPompe1 : ");
     Serial.println(seuilPompe1);
-    Serial.println("");
+    delay(100);
     Serial.print("seuilPompe2 : ");
     Serial.println(seuilPompe2);
+    delay(100);
   }
 }
