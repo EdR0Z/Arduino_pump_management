@@ -1,4 +1,6 @@
 #include <NewPing.h>
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
 
 // Broches
 const int pompe1Pin = 2;
@@ -33,9 +35,12 @@ int distance = 0;
 
 // Modules externes
 NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
+LiquidCrystal_I2C lcd(0x27, 20, 4);
 
 void setup() {
   Serial.begin(9600);
+  lcd.init();
+  lcd.backlight();
   pinMode(LED_BUILTIN, OUTPUT);
   pinMode(pompe1Pin, OUTPUT);
   pinMode(pompe2Pin, OUTPUT);
@@ -58,17 +63,37 @@ void setup() {
   digitalWrite(LED_BUILTIN, HIGH);
   delay(30);
   digitalWrite(LED_BUILTIN, LOW);
-}
 
-void printAndDelay(const char* label, int value) {
-  Serial.print(label);
-  Serial.print(":");
-  Serial.print(value);
-  Serial.println("");
-  delay(100);
+  lcd.setCursor(0, 0);
+  lcd.print("Initialisation. ");
+  delay(300);
+  lcd.setCursor(0, 0);
+  lcd.print("Initialisation.. ");
+  delay(300);
+  lcd.setCursor(0, 0);
+  lcd.print("Initialisation... ");
+  delay(300);
+  lcd.setCursor(0, 0);
+  lcd.print("Initialisation.... ");
+  delay(300);
+  lcd.setCursor(0, 0);
+  lcd.print("Initialisation..... ");
+  delay(300);
+  lcd.setCursor(0, 0);
+  lcd.print("Initialisation...... ");
+  delay(2000);
+  lcd.setCursor(0, 0);
+  lcd.print("Initialisation....Ok ");
+  delay(2000);
+  lcd.clear();
 }
 
 void loop() {
+
+  lcd.setCursor(0, 2);
+  lcd.print(modeManuel);
+  lcd.setCursor(0, 3);
+  lcd.print(modeAuto);
 
   digitalWrite(LED_BUILTIN, HIGH);
   delay(50);
@@ -80,9 +105,13 @@ void loop() {
   selecteurModeAdj = digitalRead(interSelecteurModeAdj);
 
   if ((selecteurMode) == 0) {
+    lcd.setCursor(0, 0);
+    lcd.print("Mode : Auto");
     modeManuel = 0;
     modeAuto = 1;
   } else if ((selecteurMode) == 1) {
+    lcd.setCursor(0, 0);
+    lcd.print("Mode : Manuel");
     modeManuel = 1;
     modeAuto = 0;
   }
@@ -91,6 +120,24 @@ void loop() {
     modeAdj = 0;
   } else if ((selecteurModeAdj) == 1) {
     modeAdj = 1;
+  }
+
+  if ((modeAuto) && (!modeManuel)) {  // mode auto et pas mode manu
+    if ((distance) <= (seuilPompe1)) {
+      digitalWrite(pompe1Pin, HIGH);  // Pompe1 sur ON pompe1Pin
+      etatPompe1Pin = 1;
+    } else if ((distance) > (seuilPompe1)) {
+      digitalWrite(pompe1Pin, LOW);  // Pompe1 sur ON pompe1Pin
+      etatPompe1Pin = 0;
+    }
+
+    if ((distance) <= (seuilPompe2)) {
+      digitalWrite(pompe2Pin, HIGH);  // Pompe1 sur ON pompe1Pin
+      etatPompe2Pin = 1;
+    } else if ((distance) > (seuilPompe2)) {
+      digitalWrite(pompe2Pin, LOW);  // Pompe1 sur ON pompe1Pin
+      etatPompe2Pin = 0;
+    }
   }
 
   if ((modeManuel) && (!modeAdj)) {                // mode manu et pas mode d'ajustement
@@ -140,24 +187,6 @@ void loop() {
     } else if ((bpAdjMoins) && (bpPompe2)) {
       seuilPompe2 = seuilPompe2 - 1;
       bpAdjPlus = 0;
-    }
-  }
-
-  if ((modeAuto) && (!modeManuel)) {  // mode auto et pas mode manu
-    if ((distance) <= (seuilPompe1)) {
-      digitalWrite(pompe1Pin, HIGH);  // Pompe1 sur ON pompe1Pin
-      etatPompe1Pin = 1;
-    } else if ((distance) > (seuilPompe1)) {
-      digitalWrite(pompe1Pin, LOW);  // Pompe1 sur ON pompe1Pin
-      etatPompe1Pin = 0;
-    }
-
-    if ((distance) <= (seuilPompe2)) {
-      digitalWrite(pompe2Pin, HIGH);  // Pompe1 sur ON pompe1Pin
-      etatPompe2Pin = 1;
-    } else if ((distance) > (seuilPompe2)) {
-      digitalWrite(pompe2Pin, LOW);  // Pompe1 sur ON pompe1Pin
-      etatPompe2Pin = 0;
     }
   }
 }
