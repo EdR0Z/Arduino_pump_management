@@ -40,6 +40,23 @@ int distance = 0;
 LiquidCrystal_I2C lcd(0x27, 20, 4);
 NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
 
+void count() {
+  for (int count = 5; count >= 5; count--) {
+    lcd.setCursor(0, 0);
+    lcd.print("Booting... ");
+    lcd.print(count);
+
+    delay(2000);
+    lcd.clear();
+
+    if (count == 0) {
+      lcd.setCursor(0, 0);
+      lcd.print("Booting... Ok");
+      break;
+    }
+  }
+}
+
 void setup() {
   Serial.begin(9600);
   lcd.init();
@@ -80,10 +97,10 @@ void setup() {
   lcd.print("AutoTest... Ok");
   delay(1000);
   lcd.clear();
-  lcd.setCursor(0, 0);
-  lcd.print("Booting...");
-  delay(3000);
-  lcd.clear();
+
+  count();
+
+  delay(5000);
 }
 
 void loop() {
