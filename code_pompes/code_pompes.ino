@@ -66,6 +66,23 @@ void setup() {
   digitalWrite(LED_BUILTIN, HIGH);
   delay(30);
   digitalWrite(LED_BUILTIN, LOW);
+
+  lcd.setCursor(0, 0);
+  lcd.print("Initialisation");
+  delay(1000);
+  lcd.setCursor(0, 0);
+  lcd.print("Initialisation.");
+  delay(1000);
+  lcd.setCursor(0, 0);
+  lcd.print("Initialisation..");
+  delay(1000);
+  lcd.setCursor(0, 0);
+  lcd.print("Initialisation...");
+  delay(1000);
+  lcd.setCursor(0, 0);
+  lcd.print("Initialisation... Ok");
+  delay(2000);
+  lcd.clear();
 }
 
 void loop() {
