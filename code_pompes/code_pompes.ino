@@ -58,7 +58,6 @@ void setup() {
   digitalWrite(LED_BUILTIN, LOW);
   digitalWrite(TRIGGER_PIN, LOW);
 
-
   digitalWrite(LED_BUILTIN, HIGH);
   delay(30);
   digitalWrite(LED_BUILTIN, LOW);
@@ -66,6 +65,14 @@ void setup() {
   digitalWrite(LED_BUILTIN, HIGH);
   delay(30);
   digitalWrite(LED_BUILTIN, LOW);
+  delay(30);
+  digitalWrite(pompe1Pin, HIGH);
+  delay(100);
+  digitalWrite(pompe1Pin, LOW);
+  delay(100);
+  digitalWrite(pompe2Pin, HIGH);
+  delay(100);
+  digitalWrite(pompe2Pin, LOW);
 
   lcd.setCursor(0, 0);
   lcd.print("Initialisation");
@@ -81,7 +88,39 @@ void setup() {
   delay(1000);
   lcd.setCursor(0, 0);
   lcd.print("Initialisation... Ok");
-  delay(2000);
+  delay(3000);
+  lcd.clear();
+
+  lcd.setCursor(0, 0);
+  lcd.print("Demarrage");
+  delay(1000);
+  lcd.setCursor(0, 0);
+  lcd.print("Demarrage.");
+  delay(1000);
+  lcd.setCursor(0, 0);
+  lcd.print("Demarrage..");
+  delay(1000);
+  lcd.setCursor(0, 0);
+  lcd.print("Demarrage...");
+  delay(1000);
+  lcd.setCursor(0, 0);
+  lcd.print("Demarrage....");
+  delay(1000);
+  lcd.setCursor(0, 0);
+  lcd.print("Demarrage.....");
+  delay(1000);
+  lcd.setCursor(0, 0);
+  lcd.print("Demarrage......");
+  delay(1000);
+  lcd.setCursor(0, 0);
+  lcd.print("Demarrage.......");
+  delay(1000);
+  lcd.setCursor(0, 0);
+  lcd.print("Demarrage........");
+  delay(1000);
+  lcd.setCursor(0, 0);
+  lcd.print("Demarrage........ Ok");
+  delay(3000);
   lcd.clear();
 }
 
