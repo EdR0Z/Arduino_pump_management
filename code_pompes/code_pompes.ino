@@ -44,7 +44,6 @@ void setup() {
   Serial.begin(9600);
   lcd.init();
   lcd.backlight();
-  pinMode(LED_BUILTIN, OUTPUT);
   pinMode(pompe1Pin, OUTPUT);
   pinMode(pompe2Pin, OUTPUT);
   pinMode(boutonPoussoirPompe1, INPUT);
@@ -53,32 +52,35 @@ void setup() {
   pinMode(interSelecteurModeAdj, INPUT);
   pinMode(boutonPoussoirAdjPlus, INPUT);
   pinMode(boutonPoussoirAdjMoins, INPUT);
-  digitalWrite(pompe1Pin, LOW);
-  digitalWrite(pompe2Pin, LOW);
+
   pinMode(ECHO_PIN, INPUT);
   pinMode(TRIGGER_PIN, OUTPUT);
-  digitalWrite(LED_BUILTIN, LOW);
+  digitalWrite(pompe1Pin, LOW);
+  digitalWrite(pompe2Pin, LOW);
   digitalWrite(TRIGGER_PIN, LOW);
 
   lcd.setCursor(0, 0);
-  lcd.print("Initialisation...");
+  lcd.print("AutoTest...");
   delay(1000);
 
   digitalWrite(pompe1Pin, HIGH);
   etatPompe1Pin = 1;
-  delay(30);
+  delay(100);
   digitalWrite(pompe1Pin, LOW);
   etatPompe1Pin = 0;
-  delay(30);
+  delay(100);
   digitalWrite(pompe2Pin, HIGH);
   etatPompe2Pin = 1;
-  delay(30);
+  delay(100);
   digitalWrite(pompe2Pin, LOW);
   etatPompe2Pin = 0;
-  delay(30);
+  delay(100);
 
   lcd.setCursor(0, 0);
-  lcd.print("Initialisation... Ok");
+  lcd.print("AutoTest... Ok");
+  delay(1000);
+  lcd.setCursor(0, 0);
+  lcd.print("Booting...");
   delay(1000);
   lcd.clear();
 }
@@ -93,11 +95,6 @@ void loop() {
 
   lcd.setCursor(0, 3);
   lcd.print("Distance: ") + (distance);
-
-  digitalWrite(LED_BUILTIN, HIGH);
-  delay(50);
-  digitalWrite(LED_BUILTIN, LOW);
-  delay(50);
 
   distance = sonar.ping_cm();
   selecteurMode = digitalRead(interSelecteurMode);
