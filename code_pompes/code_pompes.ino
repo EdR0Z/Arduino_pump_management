@@ -70,13 +70,14 @@ void setup() {
 
 void loop() {
 
-  lcd.clear();
-
   lcd.setCursor(0, 0);
   lcd.print(modeStr);
 
   lcd.setCursor(0, 1);
   lcd.print(etatPompe1Str + " " + etatPompe2Str);
+
+  lcd.setCursor(0, 3);
+  lcd.print("Distance: ") + (distance);
 
   digitalWrite(LED_BUILTIN, HIGH);
   delay(50);
@@ -140,17 +141,25 @@ void loop() {
     modeStr = "Mode: Adjust";
 
     if ((bpAdjPlus) && (bpPompe1)) {
+      lcd.setCursor(0, 2);
+      lcd.print(seuilPompe1);
       bpAdjPlus = 1;
       seuilPompe1 = seuilPompe1 + 1;
     } else if ((bpAdjMoins) && (bpPompe1)) {
+      lcd.setCursor(0, 2);
+      lcd.print(seuilPompe1);
       seuilPompe1 = seuilPompe1 - 1;
       bpAdjPlus = 0;
     }
 
     if ((bpAdjPlus) && (bpPompe2)) {
+      lcd.setCursor(0, 2);
+      lcd.print(seuilPompe2);
       bpAdjPlus = 1;
       seuilPompe2 = seuilPompe2 + 1;
     } else if ((bpAdjMoins) && (bpPompe2)) {
+      lcd.setCursor(0, 2);
+      lcd.print(seuilPompe2);
       seuilPompe2 = seuilPompe2 - 1;
       bpAdjPlus = 0;
     }
