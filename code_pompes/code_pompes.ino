@@ -92,6 +92,9 @@ void setup() {
   delay(100);
 
   lcd.setCursor(0, 0);
+  lcd.print("AutoTest... ");
+  delay(3000);
+  lcd.setCursor(0, 0);
   lcd.print("AutoTest... Ok");
   delay(1000);
   lcd.clear();
