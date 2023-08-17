@@ -80,7 +80,7 @@ void setup() {
   lcd.print("AutoTest... Ok");
   delay(1000);
   lcd.setCursor(0, 0);
-  lcd.print("Booting...");
+  lcd.print("Booting... ");
   delay(1000);
   lcd.clear();
 }
