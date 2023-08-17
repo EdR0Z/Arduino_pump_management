@@ -53,70 +53,33 @@ void setup() {
   pinMode(interSelecteurModeAdj, INPUT);
   pinMode(boutonPoussoirAdjPlus, INPUT);
   pinMode(boutonPoussoirAdjMoins, INPUT);
+  digitalWrite(pompe1Pin, LOW);
+  digitalWrite(pompe2Pin, LOW);
   pinMode(ECHO_PIN, INPUT);
   pinMode(TRIGGER_PIN, OUTPUT);
   digitalWrite(LED_BUILTIN, LOW);
   digitalWrite(TRIGGER_PIN, LOW);
 
   lcd.setCursor(0, 0);
-  lcd.print("Initialisation");
-  delay(1000);
-  lcd.setCursor(0, 0);
-  lcd.print("Initialisation.");
+  lcd.print("Initialisation...");
   delay(1000);
 
   digitalWrite(pompe1Pin, HIGH);
+  etatPompe1Pin = 1;
   delay(30);
   digitalWrite(pompe1Pin, LOW);
+  etatPompe1Pin = 0;
   delay(30);
-
-  lcd.setCursor(0, 0);
-  lcd.print("Initialisation..");
-
-  delay(1000);
   digitalWrite(pompe2Pin, HIGH);
+  etatPompe2Pin = 1;
   delay(30);
   digitalWrite(pompe2Pin, LOW);
+  etatPompe2Pin = 0;
   delay(30);
 
   lcd.setCursor(0, 0);
-  lcd.print("Initialisation...");
-  delay(1000);
-  lcd.setCursor(0, 0);
   lcd.print("Initialisation... Ok");
-  delay(3000);
-  lcd.clear();
-
-  lcd.setCursor(0, 0);
-  lcd.print("Demarrage");
   delay(1000);
-  lcd.setCursor(0, 0);
-  lcd.print("Demarrage.");
-  delay(1000);
-  lcd.setCursor(0, 0);
-  lcd.print("Demarrage..");
-  delay(1000);
-  lcd.setCursor(0, 0);
-  lcd.print("Demarrage...");
-  delay(1000);
-  lcd.setCursor(0, 0);
-  lcd.print("Demarrage....");
-  delay(1000);
-  lcd.setCursor(0, 0);
-  lcd.print("Demarrage.....");
-  delay(1000);
-  lcd.setCursor(0, 0);
-  lcd.print("Demarrage......");
-  delay(1000);
-  lcd.setCursor(0, 0);
-  lcd.print("Demarrage.......");
-  delay(1000);
-  lcd.setCursor(0, 0);
-  lcd.print("Demarrage........");
-  delay(1000);
-  lcd.setCursor(0, 0);
-  lcd.print("Demarrage........ Ok");
-  delay(3000);
   lcd.clear();
 }
 
