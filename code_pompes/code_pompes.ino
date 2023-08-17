@@ -20,6 +20,7 @@ int seuilPompe2 = 15;
 const int MAX_DISTANCE = 400;
 String etatPompe1Str = "";
 String etatPompe2Str = "";
+String modeStr = "";
 
 // États
 int selecteurMode = 0;
@@ -67,17 +68,13 @@ void setup() {
   digitalWrite(LED_BUILTIN, LOW);
 }
 
-void printAndDelay(const char* label, int value) {
-  Serial.print(label);
-  Serial.print(":");
-  Serial.print(value);
-  Serial.println("");
-  delay(100);
-}
-
 void loop() {
 
   lcd.clear();
+
+  lcd.setCursor(0, 0);
+  lcd.print(modeStr);
+
   lcd.setCursor(0, 1);
   lcd.print(etatPompe1Str + " " + etatPompe2Str);
 
@@ -107,8 +104,8 @@ void loop() {
   if ((modeManuel) && (!modeAdj)) {                // mode manu et pas mode d'ajustement
     bpPompe1 = digitalRead(boutonPoussoirPompe1);  //Lecture poussoir pompe 1
     bpPompe2 = digitalRead(boutonPoussoirPompe2);  //Lecture poussoir pompe 2
-    lcd.setCursor(0, 0);
-    lcd.print("Mode: Manuel");
+    modeStr = "Mode: Manuel";
+
     if ((bpPompe1) == 0) {           // boutonPoussoirPompe1 pas actionné
       digitalWrite(pompe1Pin, LOW);  // Pompe1 sur OFF pompe1Pin
       etatPompe1Str = "P1: OFF";
@@ -135,13 +132,12 @@ void loop() {
     bpAdjMoins = digitalRead(boutonPoussoirAdjMoins);  //Lecture poussoir adj moins
     bpPompe1 = digitalRead(boutonPoussoirPompe1);      //Lecture poussoir pompe 1
     bpPompe2 = digitalRead(boutonPoussoirPompe2);      //Lecture poussoir pompe 2
-    lcd.setCursor(0, 0);
-    lcd.print("Mode: Manuel (Adj)");
-
-    digitalWrite(pompe1Pin, LOW);  // Pompe1 sur OFF pompe1Pin
+    digitalWrite(pompe1Pin, LOW);                      // Pompe1 sur OFF pompe1Pin
     etatPompe1Pin = 0;
     digitalWrite(pompe2Pin, LOW);  // pompe2 sur OFF pompe2Pin
     etatPompe2Pin = 0;
+
+    modeStr = "Mode: Adjust";
 
     if ((bpAdjPlus) && (bpPompe1)) {
       bpAdjPlus = 1;
@@ -161,8 +157,8 @@ void loop() {
   }
 
   if ((modeAuto) && (!modeManuel)) {  // mode auto et pas mode manu
-    lcd.setCursor(0, 0);
-    lcd.print("Mode: Auto");
+    modeStr = "Mode: Auto";
+
     if ((distance) <= (seuilPompe1)) {
       digitalWrite(pompe1Pin, HIGH);  // Pompe1 sur ON pompe1Pin
       etatPompe1Str = "P1: ON";
@@ -175,11 +171,11 @@ void loop() {
 
     if ((distance) <= (seuilPompe2)) {
       digitalWrite(pompe2Pin, HIGH);  // Pompe1 sur ON pompe1Pin
-      etatPompe1Str = "P2: ON";
+      etatPompe2Str = "P2: ON";
       etatPompe2Pin = 1;
     } else if ((distance) > (seuilPompe2)) {
       digitalWrite(pompe2Pin, LOW);  // Pompe1 sur ON pompe1Pin
-      etatPompe1Str = "P2: OFF";
+      etatPompe2Str = "P2: OFF";
       etatPompe2Pin = 0;
     }
   }
