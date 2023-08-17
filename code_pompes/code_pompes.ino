@@ -58,31 +58,27 @@ void setup() {
   digitalWrite(LED_BUILTIN, LOW);
   digitalWrite(TRIGGER_PIN, LOW);
 
-  digitalWrite(LED_BUILTIN, HIGH);
-  delay(30);
-  digitalWrite(LED_BUILTIN, LOW);
-  delay(30);
-  digitalWrite(LED_BUILTIN, HIGH);
-  delay(30);
-  digitalWrite(LED_BUILTIN, LOW);
-  delay(30);
-  digitalWrite(pompe1Pin, HIGH);
-  delay(100);
-  digitalWrite(pompe1Pin, LOW);
-  delay(100);
-  digitalWrite(pompe2Pin, HIGH);
-  delay(100);
-  digitalWrite(pompe2Pin, LOW);
-
   lcd.setCursor(0, 0);
   lcd.print("Initialisation");
   delay(1000);
   lcd.setCursor(0, 0);
   lcd.print("Initialisation.");
   delay(1000);
+
+  digitalWrite(pompe1Pin, HIGH);
+  delay(30);
+  digitalWrite(pompe1Pin, LOW);
+  delay(30);
+
   lcd.setCursor(0, 0);
   lcd.print("Initialisation..");
+
   delay(1000);
+  digitalWrite(pompe2Pin, HIGH);
+  delay(30);
+  digitalWrite(pompe2Pin, LOW);
+  delay(30);
+
   lcd.setCursor(0, 0);
   lcd.print("Initialisation...");
   delay(1000);
