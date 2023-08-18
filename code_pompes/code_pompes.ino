@@ -171,28 +171,36 @@ void loop() {
 
     if ((bpAdjPlus) && (bpPompe1)) {
       lcd.setCursor(0, 2);
+      lcd.print("Seuil P1: ");
+      lcd.setCursor(10, 1);
       lcd.print(seuilPompe1);
       bpAdjPlus = 1;
       seuilPompe1 = seuilPompe1 + 1;
+      lcd.clear();
     } else if ((bpAdjMoins) && (bpPompe1)) {
       lcd.setCursor(0, 2);
       lcd.print("Seuil P1: ");
-      lcd.setCursor(10, 2);
+      lcd.setCursor(10, 1);
       lcd.print(seuilPompe1);
       seuilPompe1 = seuilPompe1 - 1;
       bpAdjPlus = 0;
+      lcd.clear();
     }
 
     if ((bpAdjPlus) && (bpPompe2)) {
       lcd.setCursor(0, 2);
+      lcd.print("Seuil P2: ");
+      lcd.setCursor(10, 1);
       lcd.print(seuilPompe2);
+      lcd.clear();
       bpAdjPlus = 1;
       seuilPompe2 = seuilPompe2 + 1;
     } else if ((bpAdjMoins) && (bpPompe2)) {
       lcd.setCursor(0, 2);
       lcd.print("Seuil P2: ");
-      lcd.setCursor(10, 2);
+      lcd.setCursor(10, 1);
       lcd.print(seuilPompe2);
+      lcd.clear();
       seuilPompe2 = seuilPompe2 - 1;
       bpAdjPlus = 0;
     }
