@@ -47,7 +47,7 @@ void count() {
     lcd.print(count);
     delay(1000);
   }
-  lcd.setCursor(0, 0);
+  lcd.setCursor(0, 1);
   lcd.print("Booting... Ok");
   delay(1000);
   lcd.clear();
