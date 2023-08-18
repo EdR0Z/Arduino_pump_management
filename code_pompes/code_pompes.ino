@@ -68,10 +68,10 @@ void setup() {
 
   pinMode(ECHO_PIN, INPUT);
   pinMode(TRIGGER_PIN, OUTPUT);
-  digitalWrite(pompe1Pin, LOW);
-  digitalWrite(pompe2Pin, LOW);
+  digitalWrite(pompe1Pin, HIGH);
+  digitalWrite(pompe2Pin, HIGH);
   digitalWrite(TRIGGER_PIN, LOW);
-  
+
   lcd.setCursor(0, 0);
   lcd.print("AutoTest            ");
   delay(500);
@@ -175,6 +175,7 @@ void loop() {
         lcd.print(seuilPompe1);
       }
       bpAdjPlus = 1;
+      bpAdjMoins = 0;
       if (seuilPompe1 > 0) {
         seuilPompe1 = seuilPompe1 + 1;
       }
@@ -188,9 +189,10 @@ void loop() {
       } else {
         lcd.print(seuilPompe1);
       }
+      bpAdjPlus = 0;
+      bpAdjMoins = 1;
       if (seuilPompe1 > 0) {
         seuilPompe1 = seuilPompe1 - 1;
-        bpAdjPlus = 0;
       }
     }
 
@@ -205,6 +207,7 @@ void loop() {
         lcd.print(seuilPompe2);
       }
       bpAdjPlus = 1;
+      bpAdjMoins = 0;
       if (seuilPompe2 > 0) {
         seuilPompe2 = seuilPompe2 + 1;
       }
@@ -218,11 +221,11 @@ void loop() {
       } else {
         lcd.print(seuilPompe2);
       }
+      bpAdjPlus = 0;
+      bpAdjMoins = 1;
       if (seuilPompe2 > 0) {
         seuilPompe2 = seuilPompe2 - 1;
-        bpAdjPlus = 0;
       }
-      bpAdjPlus = 0;
     }
   }
 
