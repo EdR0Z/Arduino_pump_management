@@ -117,17 +117,17 @@ void loop() {
   selecteurMode = digitalRead(interSelecteurMode);
   selecteurModeAdj = digitalRead(interSelecteurModeAdj);
 
-  if ((selecteurMode) == 0) {
+  if (selecteurMode == LOW) {
     modeManuel = 0;
     modeAuto = 1;
-  } else if ((selecteurMode) == 1) {
+  } else if (selecteurMode == HIGH) {
     modeManuel = 1;
     modeAuto = 0;
   }
 
-  if ((selecteurModeAdj) == 0) {
+  if (selecteurModeAdj == LOW) {
     modeAdj = 0;
-  } else if ((selecteurModeAdj) == 1) {
+  } else if (selecteurModeAdj == HIGH) {
     modeAdj = 1;
   }
 
@@ -152,7 +152,7 @@ void loop() {
       etatPompe2Pin = 0;
     } else if ((bpPompe2) == 1) {     // boutonPoussoirPompe1 actionné
       digitalWrite(pompe2Pin, HIGH);  // Pompe1 sur ON pompe1Pin
-      etatPompe2Str = "P2: ON";
+      etatPompe2Str = "P2: ON ";
       etatPompe2Pin = 1;
     }
   }
@@ -195,11 +195,11 @@ void loop() {
   }
 
   if ((modeAuto) && (!modeManuel)) {  // mode auto et pas mode manu
-    modeStr = "Mode: Auto";
+    modeStr = "Mode: Auto  ";
 
     if ((distance) <= (seuilPompe1)) {
       digitalWrite(pompe1Pin, HIGH);  // Pompe1 sur ON pompe1Pin
-      etatPompe1Str = "P1: ON";
+      etatPompe1Str = "P1: ON ";
       etatPompe1Pin = 0;
     } else if ((distance) > (seuilPompe1)) {
       digitalWrite(pompe1Pin, LOW);  // Pompe1 sur ON pompe1Pin
@@ -209,7 +209,7 @@ void loop() {
 
     if ((distance) <= (seuilPompe2)) {
       digitalWrite(pompe2Pin, HIGH);  // Pompe1 sur ON pompe1Pin
-      etatPompe2Str = "P2: ON";
+      etatPompe2Str = "P2: ON ";
       etatPompe2Pin = 1;
     } else if ((distance) > (seuilPompe2)) {
       digitalWrite(pompe2Pin, LOW);  // Pompe1 sur ON pompe1Pin
