@@ -41,7 +41,7 @@ LiquidCrystal_I2C lcd(0x27, 20, 4);
 NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
 
 void count() {
-  for (int count = 5; count >= 0; count--) {
+  for (int count = 3; count >= 0; count--) {
     lcd.setCursor(0, 3);
     lcd.print("Booting           ");
     lcd.print(count);
@@ -71,32 +71,26 @@ void setup() {
   digitalWrite(pompe1Pin, LOW);
   digitalWrite(pompe2Pin, LOW);
   digitalWrite(TRIGGER_PIN, LOW);
-
-  /*
-  lcd.setCursor(0, 0);
-  lcd.print("AutoTest...");
-  delay(1000);
+  
   lcd.setCursor(0, 0);
   lcd.print("AutoTest            ");
-  delay(1000);
+  delay(500);
   lcd.setCursor(0, 0);
   lcd.print("AutoTest          Ok");
-  delay(1000);
+  delay(500);
   lcd.setCursor(0, 1);
   lcd.print("Load Variables      ");
-  delay(1000);
+  delay(500);
   lcd.setCursor(0, 1);
   lcd.print("Load Variables    Ok");
-  delay(1000);
+  delay(500);
   lcd.setCursor(0, 2);
   lcd.print("Check Memory        ");
-  delay(1000);
+  delay(500);
   lcd.setCursor(0, 2);
   lcd.print("Check Memory      Ok");
-  delay(1000);
+  delay(500);
   count();
-  delay(1000);
-  */
 }
 
 void loop() {
