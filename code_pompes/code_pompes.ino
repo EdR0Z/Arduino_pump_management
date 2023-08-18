@@ -174,7 +174,7 @@ void loop() {
       } else {
         lcd.print(seuilPompe1);
       }
-      if (seuilPompe1 > 0) {
+      if (seuilPompe1 > 100) {
         seuilPompe1 = seuilPompe1 + 1;
       }
     } else if ((bpAdjMoins) && (bpPompe1)) {
