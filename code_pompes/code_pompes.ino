@@ -72,6 +72,7 @@ void setup() {
   digitalWrite(pompe2Pin, LOW);
   digitalWrite(TRIGGER_PIN, LOW);
 
+  /*
   lcd.setCursor(0, 0);
   lcd.print("AutoTest...");
   delay(1000);
@@ -95,6 +96,7 @@ void setup() {
   delay(1000);
   count();
   delay(1000);
+  */
 }
 
 void loop() {
@@ -130,23 +132,26 @@ void loop() {
     bpPompe1 = digitalRead(boutonPoussoirPompe1);  //Lecture poussoir pompe 1
     bpPompe2 = digitalRead(boutonPoussoirPompe2);  //Lecture poussoir pompe 2
 
+    lcd.setCursor(0, 2);
+    lcd.print("            ");
+
     modeStr = "Mode: Manuel";
 
-    if ((bpPompe1) == 0) {           // boutonPoussoirPompe1 pas actionné
+    if ((bpPompe1) == 0) {            // boutonPoussoirPompe1 pas actionné
       digitalWrite(pompe1Pin, HIGH);  // Pompe1 sur OFF pompe1Pin
       etatPompe1Str = "P1: OFF";
       etatPompe1Pin = 0;
-    } else if ((bpPompe1) == 1) {     // boutonPoussoirPompe1 actionné
+    } else if ((bpPompe1) == 1) {    // boutonPoussoirPompe1 actionné
       digitalWrite(pompe1Pin, LOW);  // Pompe1 sur ON pompe1Pin
       etatPompe1Str = "P1: ON ";
       etatPompe1Pin = 1;
     }
 
-    if ((bpPompe2) == 0) {           // boutonPoussoirPompe1 pas actionné
+    if ((bpPompe2) == 0) {            // boutonPoussoirPompe1 pas actionné
       digitalWrite(pompe2Pin, HIGH);  // Pompe1 sur OFF pompe1Pin
       etatPompe2Str = "P2: OFF";
       etatPompe2Pin = 0;
-    } else if ((bpPompe2) == 1) {     // boutonPoussoirPompe1 actionné
+    } else if ((bpPompe2) == 1) {    // boutonPoussoirPompe1 actionné
       digitalWrite(pompe2Pin, LOW);  // Pompe1 sur ON pompe1Pin
       etatPompe2Str = "P2: ON ";
       etatPompe2Pin = 1;
@@ -158,7 +163,7 @@ void loop() {
     bpAdjMoins = digitalRead(boutonPoussoirAdjMoins);  //Lecture poussoir adj moins
     bpPompe1 = digitalRead(boutonPoussoirPompe1);      //Lecture poussoir pompe 1
     bpPompe2 = digitalRead(boutonPoussoirPompe2);      //Lecture poussoir pompe 2
-    digitalWrite(pompe1Pin, HIGH);                      // Pompe1 sur OFF pompe1Pin
+    digitalWrite(pompe1Pin, HIGH);                     // Pompe1 sur OFF pompe1Pin
     etatPompe1Pin = 0;
     digitalWrite(pompe2Pin, HIGH);  // pompe2 sur OFF pompe2Pin
     etatPompe2Pin = 0;
@@ -168,14 +173,14 @@ void loop() {
     if ((bpAdjPlus) && (bpPompe1)) {
       lcd.setCursor(0, 2);
       lcd.print("Seuil P1: ");
-      lcd.setCursor(10, 1);
+      lcd.setCursor(10, 2);
       lcd.print(seuilPompe1);
       bpAdjPlus = 1;
       seuilPompe1 = seuilPompe1 + 1;
     } else if ((bpAdjMoins) && (bpPompe1)) {
       lcd.setCursor(0, 2);
       lcd.print("Seuil P1: ");
-      lcd.setCursor(10, 1);
+      lcd.setCursor(10, 2);
       lcd.print(seuilPompe1);
       seuilPompe1 = seuilPompe1 - 1;
       bpAdjPlus = 0;
@@ -184,14 +189,14 @@ void loop() {
     if ((bpAdjPlus) && (bpPompe2)) {
       lcd.setCursor(0, 2);
       lcd.print("Seuil P2: ");
-      lcd.setCursor(10, 1);
+      lcd.setCursor(10, 2);
       lcd.print(seuilPompe2);
       bpAdjPlus = 1;
       seuilPompe2 = seuilPompe2 + 1;
     } else if ((bpAdjMoins) && (bpPompe2)) {
       lcd.setCursor(0, 2);
       lcd.print("Seuil P2: ");
-      lcd.setCursor(10, 1);
+      lcd.setCursor(10, 2);
       lcd.print(seuilPompe2);
       seuilPompe2 = seuilPompe2 - 1;
       bpAdjPlus = 0;
@@ -199,6 +204,10 @@ void loop() {
   }
 
   if ((modeAuto) && (!modeManuel)) {  // mode auto et pas mode manu
+
+    lcd.setCursor(0, 2);
+    lcd.print("            ");
+
     modeStr = "Mode: Auto  ";
 
     if ((distance) <= (seuilPompe1)) {
