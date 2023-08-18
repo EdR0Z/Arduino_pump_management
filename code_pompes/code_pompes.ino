@@ -75,33 +75,25 @@ void setup() {
   lcd.setCursor(0, 0);
   lcd.print("AutoTest...");
   delay(1000);
-
   lcd.setCursor(0, 0);
   lcd.print("AutoTest            ");
-  delay(3000);
+  delay(1000);
   lcd.setCursor(0, 0);
   lcd.print("AutoTest          Ok");
-
   delay(1000);
-
   lcd.setCursor(0, 1);
   lcd.print("Load Variables      ");
-  delay(3000);
+  delay(1000);
   lcd.setCursor(0, 1);
   lcd.print("Load Variables    Ok");
-
   delay(1000);
-
   lcd.setCursor(0, 2);
   lcd.print("Check Memory        ");
-  delay(5000);
+  delay(1000);
   lcd.setCursor(0, 2);
   lcd.print("Check Memory      Ok");
-
   delay(1000);
-
   count();
-
   delay(1000);
 }
 
@@ -141,22 +133,22 @@ void loop() {
     modeStr = "Mode: Manuel";
 
     if ((bpPompe1) == 0) {           // boutonPoussoirPompe1 pas actionné
-      digitalWrite(pompe1Pin, LOW);  // Pompe1 sur OFF pompe1Pin
-      etatPompe1Str = "P1: ON ";
+      digitalWrite(pompe1Pin, HIGH);  // Pompe1 sur OFF pompe1Pin
+      etatPompe1Str = "P1: OFF";
       etatPompe1Pin = 0;
     } else if ((bpPompe1) == 1) {     // boutonPoussoirPompe1 actionné
-      digitalWrite(pompe1Pin, HIGH);  // Pompe1 sur ON pompe1Pin
-      etatPompe1Str = "P1: OFF";
+      digitalWrite(pompe1Pin, LOW);  // Pompe1 sur ON pompe1Pin
+      etatPompe1Str = "P1: ON ";
       etatPompe1Pin = 1;
     }
 
     if ((bpPompe2) == 0) {           // boutonPoussoirPompe1 pas actionné
-      digitalWrite(pompe2Pin, LOW);  // Pompe1 sur OFF pompe1Pin
-      etatPompe2Str = "P2: ON ";
+      digitalWrite(pompe2Pin, HIGH);  // Pompe1 sur OFF pompe1Pin
+      etatPompe2Str = "P2: OFF";
       etatPompe2Pin = 0;
     } else if ((bpPompe2) == 1) {     // boutonPoussoirPompe1 actionné
-      digitalWrite(pompe2Pin, HIGH);  // Pompe1 sur ON pompe1Pin
-      etatPompe2Str = "P2: OFF";
+      digitalWrite(pompe2Pin, LOW);  // Pompe1 sur ON pompe1Pin
+      etatPompe2Str = "P2: ON ";
       etatPompe2Pin = 1;
     }
   }
@@ -166,9 +158,9 @@ void loop() {
     bpAdjMoins = digitalRead(boutonPoussoirAdjMoins);  //Lecture poussoir adj moins
     bpPompe1 = digitalRead(boutonPoussoirPompe1);      //Lecture poussoir pompe 1
     bpPompe2 = digitalRead(boutonPoussoirPompe2);      //Lecture poussoir pompe 2
-    digitalWrite(pompe1Pin, LOW);                      // Pompe1 sur OFF pompe1Pin
+    digitalWrite(pompe1Pin, HIGH);                      // Pompe1 sur OFF pompe1Pin
     etatPompe1Pin = 0;
-    digitalWrite(pompe2Pin, LOW);  // pompe2 sur OFF pompe2Pin
+    digitalWrite(pompe2Pin, HIGH);  // pompe2 sur OFF pompe2Pin
     etatPompe2Pin = 0;
 
     modeStr = "Mode: Adjust";
