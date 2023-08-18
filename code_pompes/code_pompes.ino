@@ -32,7 +32,7 @@ int bpPompe2 = 0;
 int bpAdjPlus = 0;
 int bpAdjMoins = 0;
 int modeManuel = 0;
-int modeAuto = 1;
+int modeAuto = 0;
 int modeAdj = 0;
 int distance = 0;
 
