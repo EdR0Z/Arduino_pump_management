@@ -49,7 +49,7 @@ void count() {
   }
   lcd.setCursor(0, 3);
   lcd.print("Booting           Ok");
-  delay(1000);
+  delay(2000);
   lcd.clear();
 }
 
