@@ -32,7 +32,7 @@ int bpPompe2 = 0;
 int bpAdjPlus = 0;
 int bpAdjMoins = 0;
 int modeManuel = 0;
-int modeAuto = 0;
+int modeAuto = 1;
 int modeAdj = 0;
 int distance = 0;
 
@@ -42,13 +42,13 @@ NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
 
 void count() {
   for (int count = 5; count >= 0; count--) {
-    lcd.setCursor(0, 1);
-    lcd.print("Booting... ");
+    lcd.setCursor(0, 3);
+    lcd.print("Booting           ");
     lcd.print(count);
     delay(1000);
   }
-  lcd.setCursor(0, 1);
-  lcd.print("Booting... Ok");
+  lcd.setCursor(0, 3);
+  lcd.print("Booting           Ok");
   delay(1000);
   lcd.clear();
 }
@@ -76,26 +76,33 @@ void setup() {
   lcd.print("AutoTest...");
   delay(1000);
 
-  digitalWrite(pompe1Pin, HIGH);
-  etatPompe1Pin = 1;
-  delay(100);
-  digitalWrite(pompe1Pin, LOW);
-  etatPompe1Pin = 0;
-  delay(100);
-  digitalWrite(pompe2Pin, HIGH);
-  etatPompe2Pin = 1;
-  delay(100);
-  digitalWrite(pompe2Pin, LOW);
-  etatPompe2Pin = 0;
-  delay(100);
-
   lcd.setCursor(0, 0);
-  lcd.print("AutoTest... ");
+  lcd.print("AutoTest            ");
   delay(3000);
   lcd.setCursor(0, 0);
-  lcd.print("AutoTest... Ok");
+  lcd.print("AutoTest          Ok");
+
   delay(1000);
+
+  lcd.setCursor(0, 1);
+  lcd.print("Load Variables      ");
+  delay(3000);
+  lcd.setCursor(0, 1);
+  lcd.print("Load Variables    Ok");
+
+  delay(1000);
+
+  lcd.setCursor(0, 2);
+  lcd.print("Check Memory        ");
+  delay(5000);
+  lcd.setCursor(0, 2);
+  lcd.print("Check Memory      Ok");
+
+  delay(1000);
+
   count();
+
+  delay(1000);
 }
 
 void loop() {
@@ -130,25 +137,26 @@ void loop() {
   if ((modeManuel) && (!modeAdj)) {                // mode manu et pas mode d'ajustement
     bpPompe1 = digitalRead(boutonPoussoirPompe1);  //Lecture poussoir pompe 1
     bpPompe2 = digitalRead(boutonPoussoirPompe2);  //Lecture poussoir pompe 2
+
     modeStr = "Mode: Manuel";
 
     if ((bpPompe1) == 0) {           // boutonPoussoirPompe1 pas actionné
       digitalWrite(pompe1Pin, LOW);  // Pompe1 sur OFF pompe1Pin
-      etatPompe1Str = "P1: OFF";
+      etatPompe1Str = "P1: ON ";
       etatPompe1Pin = 0;
     } else if ((bpPompe1) == 1) {     // boutonPoussoirPompe1 actionné
       digitalWrite(pompe1Pin, HIGH);  // Pompe1 sur ON pompe1Pin
-      etatPompe1Str = "P1: ON ";
+      etatPompe1Str = "P1: OFF";
       etatPompe1Pin = 1;
     }
 
     if ((bpPompe2) == 0) {           // boutonPoussoirPompe1 pas actionné
       digitalWrite(pompe2Pin, LOW);  // Pompe1 sur OFF pompe1Pin
-      etatPompe2Str = "P2: OFF";
+      etatPompe2Str = "P2: ON ";
       etatPompe2Pin = 0;
     } else if ((bpPompe2) == 1) {     // boutonPoussoirPompe1 actionné
       digitalWrite(pompe2Pin, HIGH);  // Pompe1 sur ON pompe1Pin
-      etatPompe2Str = "P2: ON ";
+      etatPompe2Str = "P2: OFF";
       etatPompe2Pin = 1;
     }
   }
@@ -203,21 +211,21 @@ void loop() {
 
     if ((distance) <= (seuilPompe1)) {
       digitalWrite(pompe1Pin, HIGH);  // Pompe1 sur ON pompe1Pin
-      etatPompe1Str = "P1: ON ";
+      etatPompe1Str = "P1: OFF";
       etatPompe1Pin = 0;
     } else if ((distance) > (seuilPompe1)) {
       digitalWrite(pompe1Pin, LOW);  // Pompe1 sur ON pompe1Pin
-      etatPompe1Str = "P1: OFF";
+      etatPompe1Str = "P1: ON ";
       etatPompe1Pin = 0;
     }
 
     if ((distance) <= (seuilPompe2)) {
       digitalWrite(pompe2Pin, HIGH);  // Pompe1 sur ON pompe1Pin
-      etatPompe2Str = "P2: ON ";
+      etatPompe2Str = "P2: OFF";
       etatPompe2Pin = 1;
     } else if ((distance) > (seuilPompe2)) {
       digitalWrite(pompe2Pin, LOW);  // Pompe1 sur ON pompe1Pin
-      etatPompe2Str = "P2: OFF";
+      etatPompe2Str = "P2: ON ";
       etatPompe2Pin = 0;
     }
   }
