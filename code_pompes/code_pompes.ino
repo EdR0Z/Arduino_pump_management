@@ -181,7 +181,9 @@ void loop() {
         lcd.print(seuilPompe1);
       }
       bpAdjPlus = 1;
-      seuilPompe1 = seuilPompe1 + 1;
+      if (seuilPompe1 > 0) {
+        seuilPompe1 = seuilPompe1 + 1;
+      }
     } else if ((bpAdjMoins) && (bpPompe1)) {
       lcd.setCursor(0, 2);
       lcd.print("Seuil P1: ");
@@ -192,8 +194,10 @@ void loop() {
       } else {
         lcd.print(seuilPompe1);
       }
-      seuilPompe1 = seuilPompe1 - 1;
-      bpAdjPlus = 0;
+      if (seuilPompe1 > 0) {
+        seuilPompe1 = seuilPompe1 - 1;
+        bpAdjPlus = 0;
+      }
     }
 
     if ((bpAdjPlus) && (bpPompe2)) {
@@ -207,7 +211,9 @@ void loop() {
         lcd.print(seuilPompe2);
       }
       bpAdjPlus = 1;
-      seuilPompe2 = seuilPompe2 + 1;
+      if (seuilPompe2 > 0) {
+        seuilPompe2 = seuilPompe2 + 1;
+      }
     } else if ((bpAdjMoins) && (bpPompe2)) {
       lcd.setCursor(0, 2);
       lcd.print("Seuil P2: ");
@@ -218,7 +224,10 @@ void loop() {
       } else {
         lcd.print(seuilPompe2);
       }
-      seuilPompe2 = seuilPompe2 - 1;
+      if (seuilPompe2 > 0) {
+        seuilPompe2 = seuilPompe2 - 1;
+        bpAdjPlus = 0;
+      }
       bpAdjPlus = 0;
     }
   }
