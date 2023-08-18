@@ -174,8 +174,6 @@ void loop() {
       } else {
         lcd.print(seuilPompe1);
       }
-      bpAdjPlus = 1;
-      bpAdjMoins = 0;
       if (seuilPompe1 > 0) {
         seuilPompe1 = seuilPompe1 + 1;
       }
@@ -189,8 +187,6 @@ void loop() {
       } else {
         lcd.print(seuilPompe1);
       }
-      bpAdjPlus = 0;
-      bpAdjMoins = 1;
       if (seuilPompe1 > 0) {
         seuilPompe1 = seuilPompe1 - 1;
       }
@@ -206,8 +202,6 @@ void loop() {
       } else {
         lcd.print(seuilPompe2);
       }
-      bpAdjPlus = 1;
-      bpAdjMoins = 0;
       if (seuilPompe2 > 0) {
         seuilPompe2 = seuilPompe2 + 1;
       }
@@ -221,8 +215,6 @@ void loop() {
       } else {
         lcd.print(seuilPompe2);
       }
-      bpAdjPlus = 0;
-      bpAdjMoins = 1;
       if (seuilPompe2 > 0) {
         seuilPompe2 = seuilPompe2 - 1;
       }
