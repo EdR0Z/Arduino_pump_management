@@ -40,19 +40,6 @@ int distance = 0;
 LiquidCrystal_I2C lcd(0x27, 20, 4);
 NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
 
-void count() {
-  for (int count = 3; count >= 0; count--) {
-    lcd.setCursor(0, 3);
-    lcd.print("Booting           ");
-    lcd.print(count);
-    delay(1000);
-  }
-  lcd.setCursor(0, 3);
-  lcd.print("Booting           Ok");
-  delay(2000);
-  lcd.clear();
-}
-
 void setup() {
   Serial.begin(9600);
   lcd.init();
@@ -71,26 +58,6 @@ void setup() {
   digitalWrite(pompe1Pin, HIGH);
   digitalWrite(pompe2Pin, HIGH);
   digitalWrite(TRIGGER_PIN, LOW);
-
-  lcd.setCursor(0, 0);
-  lcd.print("AutoTest            ");
-  delay(500);
-  lcd.setCursor(0, 0);
-  lcd.print("AutoTest          Ok");
-  delay(500);
-  lcd.setCursor(0, 1);
-  lcd.print("Load Variables      ");
-  delay(500);
-  lcd.setCursor(0, 1);
-  lcd.print("Load Variables    Ok");
-  delay(500);
-  lcd.setCursor(0, 2);
-  lcd.print("Check Memory        ");
-  delay(500);
-  lcd.setCursor(0, 2);
-  lcd.print("Check Memory      Ok");
-  delay(500);
-  count();
 }
 
 void loop() {
@@ -102,7 +69,14 @@ void loop() {
   lcd.print(etatPompe1Str + " " + etatPompe2Str);
 
   lcd.setCursor(0, 3);
-  lcd.print("Distance: ") + (distance);
+  lcd.print("Distance: ");
+  if (distance < 10) {
+    lcd.print(0);
+    lcd.print(distance);
+  } else {
+    lcd.setCursor(10, 3);
+    lcd.print(distance);
+  }
 
   distance = sonar.ping_cm();
   selecteurMode = digitalRead(interSelecteurMode);
