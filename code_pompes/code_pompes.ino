@@ -164,7 +164,7 @@ void loop() {
       } else {
         lcd.print(seuilPompe1);
       }
-      if (seuilPompe1 > 100) {
+      if (seuilPompe1 > 0) {
         seuilPompe1 = seuilPompe1 + 1;
       }
     } else if ((bpAdjMoins) && (bpPompe1)) {
@@ -181,33 +181,33 @@ void loop() {
         seuilPompe1 = seuilPompe1 - 1;
       }
     }
+  }
 
-    if ((bpAdjPlus) && (bpPompe2)) {
-      lcd.setCursor(0, 2);
-      lcd.print("Seuil P2: ");
-      lcd.setCursor(10, 2);
-      if (seuilPompe2 < 10) {
-        lcd.print(0);
-        lcd.print(seuilPompe2);
-      } else {
-        lcd.print(seuilPompe2);
-      }
-      if (seuilPompe2 > 0) {
-        seuilPompe2 = seuilPompe2 + 1;
-      }
-    } else if ((bpAdjMoins) && (bpPompe2)) {
-      lcd.setCursor(0, 2);
-      lcd.print("Seuil P2: ");
-      lcd.setCursor(10, 2);
-      if (seuilPompe2 < 10) {
-        lcd.print(0);
-        lcd.print(seuilPompe2);
-      } else {
-        lcd.print(seuilPompe2);
-      }
-      if (seuilPompe2 > 0) {
-        seuilPompe2 = seuilPompe2 - 1;
-      }
+  if ((bpAdjPlus) && (bpPompe2)) {
+    lcd.setCursor(0, 2);
+    lcd.print("Seuil P2: ");
+    lcd.setCursor(10, 2);
+    if (seuilPompe2 < 10) {
+      lcd.print(0);
+      lcd.print(seuilPompe2);
+    } else {
+      lcd.print(seuilPompe2);
+    }
+    if (seuilPompe2 > 0) {
+      seuilPompe2 = seuilPompe2 + 1;
+    }
+  } else if ((bpAdjMoins) && (bpPompe2)) {
+    lcd.setCursor(0, 2);
+    lcd.print("Seuil P2: ");
+    lcd.setCursor(10, 2);
+    if (seuilPompe2 < 10) {
+      lcd.print(0);
+      lcd.print(seuilPompe2);
+    } else {
+      lcd.print(seuilPompe2);
+    }
+    if (seuilPompe2 > 0) {
+      seuilPompe2 = seuilPompe2 - 1;
     }
   }
 
