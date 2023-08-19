@@ -21,6 +21,8 @@ const int MAX_DISTANCE = 400;
 String etatPompe1Str = "";
 String etatPompe2Str = "";
 String modeStr = "";
+long duration;
+int distance;
 
 // États
 int selecteurMode = 0;
@@ -34,7 +36,6 @@ int bpAdjMoins = 0;
 int modeManuel = 0;
 int modeAuto = 1;
 int modeAdj = 0;
-int distance = 0;
 
 // Modules externes
 LiquidCrystal_I2C lcd(0x27, 20, 4);
@@ -62,6 +63,8 @@ void setup() {
 
 void loop() {
 
+
+
   lcd.setCursor(0, 0);
   lcd.print(modeStr);
 
@@ -78,7 +81,20 @@ void loop() {
     lcd.print(distance);
   }
 
-  distance = sonar.ping_cm();
+  // Effacez le trigPin en le définissant sur LOW :
+  digitalWrite(TRIGGER_PIN, LOW);
+  delayMicroseconds(5);
+
+  // Déclenchez le capteur en réglant le trigPin haut pendant 10 microsecondes :
+  digitalWrite(TRIGGER_PIN, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIGGER_PIN, LOW);
+
+  // Lit l'echoPin, pulseIn() renvoie la durée (longueur de l'impulsion) en microsecondes :
+  duration = pulseIn(ECHO_PIN, HIGH);
+  // Calcule la distance :
+  distance = duration * 0.034 / 2;
+
   selecteurMode = digitalRead(interSelecteurMode);
   selecteurModeAdj = digitalRead(interSelecteurModeAdj);
 
