@@ -15,9 +15,12 @@ const int TRIGGER_PIN = 10;
 const int ECHO_PIN = 11;
 
 // Variables
-int seuilPompe1 = 5;
-int seuilPompe2 = 15;
-const int MAX_DISTANCE = 400;
+int seuilHautP1 = 20;
+const int seuilBasP1 = 25;
+int seuilHautP2 = 20;
+const int seuilBasP2 = 23;
+
+const int MAX_DISTANCE = 40;
 String etatPompe1Str = "";
 String etatPompe2Str = "";
 String modeStr = "";
@@ -67,10 +70,8 @@ void loop() {
 
   lcd.setCursor(0, 0);
   lcd.print(modeStr);
-
   lcd.setCursor(0, 1);
   lcd.print(etatPompe1Str + " " + etatPompe2Str);
-
   lcd.setCursor(0, 3);
   lcd.print("Distance: ");
   if (distance < 10) {
@@ -158,27 +159,27 @@ void loop() {
       lcd.setCursor(0, 2);
       lcd.print("Seuil P1: ");
       lcd.setCursor(10, 2);
-      if (seuilPompe1 < 10) {
+      if (seuilHautP1 < 10) {
         lcd.print(0);
-        lcd.print(seuilPompe1);
+        lcd.print(seuilHautP1);
       } else {
-        lcd.print(seuilPompe1);
+        lcd.print(seuilHautP1);
       }
-      if (seuilPompe1 > 0) {
-        seuilPompe1 = seuilPompe1 + 1;
+      if (seuilHautP1 > 0) {
+        seuilHautP1 = seuilHautP1 + 1;
       }
     } else if ((bpAdjMoins) && (bpPompe1)) {
       lcd.setCursor(0, 2);
       lcd.print("Seuil P1: ");
       lcd.setCursor(10, 2);
-      if (seuilPompe1 < 10) {
+      if (seuilHautP1 < 10) {
         lcd.print(0);
-        lcd.print(seuilPompe1);
+        lcd.print(seuilHautP1);
       } else {
-        lcd.print(seuilPompe1);
+        lcd.print(seuilHautP1);
       }
-      if (seuilPompe1 > 0) {
-        seuilPompe1 = seuilPompe1 - 1;
+      if (seuilHautP1 > 0) {
+        seuilHautP1 = seuilHautP1 - 1;
       }
     }
   }
@@ -187,27 +188,27 @@ void loop() {
     lcd.setCursor(0, 2);
     lcd.print("Seuil P2: ");
     lcd.setCursor(10, 2);
-    if (seuilPompe2 < 10) {
+    if (seuilHautP2 < 10) {
       lcd.print(0);
-      lcd.print(seuilPompe2);
+      lcd.print(seuilHautP2);
     } else {
-      lcd.print(seuilPompe2);
+      lcd.print(seuilHautP2);
     }
-    if (seuilPompe2 > 0) {
-      seuilPompe2 = seuilPompe2 + 1;
+    if (seuilHautP2 > 0) {
+      seuilHautP2 = seuilHautP2 + 1;
     }
   } else if ((bpAdjMoins) && (bpPompe2)) {
     lcd.setCursor(0, 2);
     lcd.print("Seuil P2: ");
     lcd.setCursor(10, 2);
-    if (seuilPompe2 < 10) {
+    if (seuilHautP2 < 10) {
       lcd.print(0);
-      lcd.print(seuilPompe2);
+      lcd.print(seuilHautP2);
     } else {
-      lcd.print(seuilPompe2);
+      lcd.print(seuilHautP2);
     }
-    if (seuilPompe2 > 0) {
-      seuilPompe2 = seuilPompe2 - 1;
+    if (seuilHautP2 > 0) {
+      seuilHautP2 = seuilHautP2 - 1;
     }
   }
 
@@ -218,23 +219,23 @@ void loop() {
 
     modeStr = "Mode: Auto  ";
 
-    if ((distance) <= (seuilPompe1)) {
-      digitalWrite(pompe1Pin, HIGH);  // Pompe1 sur ON pompe1Pin
-      etatPompe1Str = "P1: OFF";
-      etatPompe1Pin = 0;
-    } else if ((distance) > (seuilPompe1)) {
+    if (distance <= seuilHautP1) {
       digitalWrite(pompe1Pin, LOW);  // Pompe1 sur ON pompe1Pin
       etatPompe1Str = "P1: ON ";
       etatPompe1Pin = 0;
+    } else if (distance >= seuilBasP1) {
+      digitalWrite(pompe1Pin, HIGH);  // Pompe1 sur ON pompe1Pin
+      etatPompe1Str = "P1: OFF";
+      etatPompe1Pin = 0;
     }
 
-    if ((distance) <= (seuilPompe2)) {
-      digitalWrite(pompe2Pin, HIGH);  // Pompe1 sur ON pompe1Pin
-      etatPompe2Str = "P2: OFF";
-      etatPompe2Pin = 1;
-    } else if ((distance) > (seuilPompe2)) {
+    if (distance <= seuilHautP2) {
       digitalWrite(pompe2Pin, LOW);  // Pompe1 sur ON pompe1Pin
       etatPompe2Str = "P2: ON ";
+      etatPompe2Pin = 1;
+    } else if (distance >= seuilBasP2) {
+      digitalWrite(pompe2Pin, HIGH);  // Pompe1 sur ON pompe1Pin
+      etatPompe2Str = "P2: OFF";
       etatPompe2Pin = 0;
     }
   }
