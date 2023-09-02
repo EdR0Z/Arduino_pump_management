@@ -65,9 +65,6 @@ void setup() {
   pinMode(ECHO_PIN, INPUT);
   pinMode(TRIGGER_PIN, OUTPUT);
 
-  digitalWrite(pompe1Pin, LOW);
-  digitalWrite(pompe2Pin, LOW);
-
   int shP1readValue = EEPROM.read(shP1address);
   seuilHautP1 = shP1readValue;
   lcd.clear();
