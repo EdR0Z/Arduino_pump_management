@@ -62,21 +62,15 @@ void setup() {
 
   pinMode(boutonPoussoirPompe1, INPUT);
   pinMode(boutonPoussoirPompe2, INPUT);
-
   pinMode(interSelecteurMode, INPUT);
   pinMode(interSelecteurModeAdj, INPUT);
-
   pinMode(boutonPoussoirAdjPlus, INPUT);
   pinMode(boutonPoussoirAdjMoins, INPUT);
-
   pinMode(ECHO_PIN, INPUT);
   pinMode(TRIGGER_PIN, OUTPUT);
 
   digitalWrite(pompe1Pin, LOW);
   digitalWrite(pompe2Pin, LOW);
-
-
-
 
   int shP1readValue = EEPROM.read(shP1address);  // Lecture de la valeur depuis l'EEPROM
   seuilHautP1 = shP1readValue;
@@ -86,6 +80,8 @@ void setup() {
   lcd.setCursor(11, 0);
   lcd.print(shP1readValue);
 
+  delay(2000);
+
   int shP2readValue = EEPROM.read(shP2address);  // Lecture de la valeur depuis l'EEPROM
   seuilHautP2 = shP2readValue;
   lcd.setCursor(0, 1);
@@ -94,6 +90,7 @@ void setup() {
   lcd.print(shP2readValue);
 
   delay(5000);
+  
   lcd.clear();
 }
 
