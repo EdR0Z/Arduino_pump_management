@@ -1,3 +1,4 @@
+#include <EEPROM.h>
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 #include <NewPing.h>
@@ -15,9 +16,12 @@ const int TRIGGER_PIN = 10;
 const int ECHO_PIN = 11;
 
 // Variables
-int seuilHautP1 = 20;
+const int shP1address = 0;  // L'adresse de l'EEPROM où vous voulez stocker la valeur
+const int shP2address = 1;  // L'adresse de l'EEPROM où vous voulez stocker la valeur
+
+int seuilHautP1 = 0;
 const int seuilBasP1 = 25;
-int seuilHautP2 = 20;
+int seuilHautP2 = 0;
 const int seuilBasP2 = 23;
 
 const int MAX_DISTANCE = 40;
@@ -41,27 +45,56 @@ int modeAuto = 1;
 int modeAdj = 0;
 
 // Modules externes
-LiquidCrystal_I2C lcd(0x27, 20, 4);
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+LiquidCrystal_I2C lcd1(0x26, 16, 2);
 NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
 
 void setup() {
   Serial.begin(9600);
+
   lcd.init();
   lcd.backlight();
+  lcd1.init();
+  lcd1.backlight();
+
   pinMode(pompe1Pin, OUTPUT);
   pinMode(pompe2Pin, OUTPUT);
+
   pinMode(boutonPoussoirPompe1, INPUT);
   pinMode(boutonPoussoirPompe2, INPUT);
+
   pinMode(interSelecteurMode, INPUT);
   pinMode(interSelecteurModeAdj, INPUT);
+
   pinMode(boutonPoussoirAdjPlus, INPUT);
   pinMode(boutonPoussoirAdjMoins, INPUT);
 
   pinMode(ECHO_PIN, INPUT);
   pinMode(TRIGGER_PIN, OUTPUT);
+
   digitalWrite(pompe1Pin, LOW);
   digitalWrite(pompe2Pin, LOW);
-  digitalWrite(TRIGGER_PIN, LOW);
+
+
+
+
+  int shP1readValue = EEPROM.read(shP1address);  // Lecture de la valeur depuis l'EEPROM
+  seuilHautP1 = shP1readValue;
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Read shP1: ");
+  lcd.setCursor(11, 0);
+  lcd.print(shP1readValue);
+
+  int shP2readValue = EEPROM.read(shP2address);  // Lecture de la valeur depuis l'EEPROM
+  seuilHautP2 = shP2readValue;
+  lcd.setCursor(0, 1);
+  lcd.print("Read shP2: ");
+  lcd.setCursor(11, 1);
+  lcd.print(shP2readValue);
+
+  delay(5000);
+  lcd.clear();
 }
 
 void loop() {
@@ -74,6 +107,7 @@ void loop() {
   lcd.setCursor(0, 3);
   lcd.print("Distance: ");
   if (distance < 10) {
+    lcd.setCursor(10, 3);
     lcd.print(0);
     lcd.print(distance);
   } else {
@@ -181,6 +215,11 @@ void loop() {
         seuilHautP1 = seuilHautP1 - 1;
       }
     }
+    EEPROM.write(shP1address, seuilHautP1);
+    Serial.println("Write shP1:");
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("Write shP1...");
   }
 
   if ((bpAdjPlus) && (bpPompe2)) {
@@ -209,6 +248,11 @@ void loop() {
     if (seuilHautP2 > 0) {
       seuilHautP2 = seuilHautP2 - 1;
     }
+    EEPROM.write(shP2address, seuilHautP2);
+    Serial.println("Write shP2");
+    lcd.clear();
+    lcd.setCursor(0, 1);
+    lcd.print("Write shP2...");
   }
 
   if ((modeAuto) && (!modeManuel)) {  // mode auto et pas mode manu
