@@ -1,7 +1,7 @@
-#include <EEPROM.h>               // Bibliothèque pour l'accès à l'EEPROM
-#include <Wire.h>                 // Bibliothèque pour la communication I2C
-#include <LiquidCrystal_I2C.h>    // Bibliothèque pour les écrans LCD I2C
-#include <NewPing.h>              // Bibliothèque pour le capteur ultrasonique
+#include <EEPROM.h>             // Bibliothèque pour l'accès à l'EEPROM
+#include <Wire.h>               // Bibliothèque pour la communication I2C
+#include <LiquidCrystal_I2C.h>  // Bibliothèque pour les écrans LCD I2C
+#include <NewPing.h>            // Bibliothèque pour le capteur ultrasonique
 
 // Déclaration des broches matérielles
 const int pompe1Pin = 2;
@@ -57,8 +57,6 @@ void setup() {
   // Initialisation des écrans LCD
   lcd.init();
   lcd.backlight();
-  lcd1.init();
-  lcd1.backlight();
 
   // Configuration des broches en entrée ou en sortie
   pinMode(pompe1Pin, OUTPUT);
@@ -252,7 +250,7 @@ void loop() {
     if (seuilHautP2 > 0) {
       seuilHautP2 = seuilHautP2 - 1;
     }
-    
+
     // Écriture du seuil ajusté dans l'EEPROM
     EEPROM.write(shP2address, seuilHautP2);
     Serial.println("Write shP2");
