@@ -14,6 +14,7 @@ const int boutonPoussoirAdjMoins = 8;
 const int boutonPoussoirAdjPlus = 9;
 const int TRIGGER_PIN = 10;
 const int ECHO_PIN = 11;
+const int delaimesure = 1;
 
 // Adresses EEPROM pour le stockage de données
 const int shP1address = 0;
@@ -93,7 +94,7 @@ void setup() {
 
 void loop() {
   // Attente courte pour éviter de saturer la boucle
-  delay(2);
+  delay(delaimesure * 1000);
 
   // Affichage des informations sur l'écran LCD
   lcd.setCursor(0, 0);
@@ -207,15 +208,15 @@ void loop() {
 
     else if ((bpAdjPlus == HIGH) && (bpAdjMoins == HIGH)) {
       lcd.clear();
+      lcd.setCursor(0, 0);
+      lcd.print("Writing EEPROM...");
       lcd.setCursor(0, 1);
-      lcd.print("Write EEPROM... Wait...");
-      lcd.setCursor(0, 2);
-      lcd.print("Write shP1");
+      lcd.print("Write shP1, shP2");
       EEPROM.write(shP1address, seuilHautP1 + 1);  // Écriture d'un octet à l'adresse spécifiée
-      lcd.setCursor(0, 3);
-      lcd.print("Write shP2");
       EEPROM.write(shP2address, seuilHautP2 + 1);  // Écriture d'un octet à l'adresse spécifiée
-      delay(1000);
+      lcd.setCursor(0, 2);
+      lcd.print("Write succefull!");
+      delay(5000);
       lcd.clear();
     }
   }
