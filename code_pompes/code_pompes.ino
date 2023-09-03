@@ -3,7 +3,6 @@
 #include <LiquidCrystal_I2C.h>  // Bibliothèque pour les écrans LCD I2C
 #include <NewPing.h>            // Bibliothèque pour le capteur ultrasonique
 
-// Déclaration des broches matérielles
 const int pompe1Pin = 2;
 const int pompe2Pin = 3;
 const int boutonPoussoirPompe1 = 4;
@@ -15,26 +14,13 @@ const int boutonPoussoirAdjPlus = 9;
 const int TRIGGER_PIN = 10;
 const int ECHO_PIN = 11;
 const int delaimesure = 1;
-
-// Adresses EEPROM pour le stockage de données
+const int seuilBasP1 = 17;
 const int shP1address = 0;
 const int shP2address = 1;
-
-// Variables pour les seuils de déclenchement des pompes
-int seuilHautP1 = 0;
-const int seuilBasP1 = 17;
-int seuilHautP2 = 0;
 const int seuilBasP2 = 14;
-
-// Constante pour la distance maximale du capteur ultrasonique
 const int MAX_DISTANCE = 40;
-String etatPompe1Str = "";
-String etatPompe2Str = "";
-String modeStr = "";
-long duration;
-int distance;
-
-// Variables de contrôle et d'état
+int seuilHautP1 = 0;
+int seuilHautP2 = 0;
 int selecteurMode = 0;
 int selecteurModeAdj = 0;
 int etatPompe1Pin = 0;
@@ -46,20 +32,18 @@ int bpAdjMoins = 0;
 int modeManuel = 0;
 int modeAuto = 1;
 int modeAdj = 0;
-
-// Initialisation des modules externes
+int distance;
+long duration;
+String etatPompe1Str = "";
+String etatPompe2Str = "";
+String modeStr = "";
 LiquidCrystal_I2C lcd(0x27, 20, 4);
 NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
 
 void setup() {
-  // Initialisation de la communication série
   Serial.begin(9600);
-
-  // Initialisation des écrans LCD
   lcd.init();
   lcd.backlight();
-
-  // Configuration des broches en entrée ou en sortie
   pinMode(pompe1Pin, OUTPUT);
   pinMode(pompe2Pin, OUTPUT);
   pinMode(boutonPoussoirPompe1, INPUT);
@@ -70,14 +54,10 @@ void setup() {
   pinMode(boutonPoussoirAdjMoins, INPUT);
   pinMode(ECHO_PIN, INPUT);
   pinMode(TRIGGER_PIN, OUTPUT);
-
   digitalWrite(pompe1Pin, HIGH);
   etatPompe1Pin = 0;
-
   digitalWrite(pompe2Pin, HIGH);
   etatPompe2Pin = 0;
-
-  // Lecture des seuils à partir de l'EEPROM et affichage
   int shP1readValue = EEPROM.read(shP1address);
   seuilHautP1 = shP1readValue;
   lcd.clear();
@@ -85,16 +65,13 @@ void setup() {
   lcd.print("Read shP1: ");
   lcd.setCursor(11, 0);
   lcd.print(shP1readValue);
-
   int shP2readValue = EEPROM.read(shP2address);
   seuilHautP2 = shP2readValue;
   lcd.setCursor(0, 1);
   lcd.print("Read shP2: ");
   lcd.setCursor(11, 1);
   lcd.print(shP2readValue);
-
   delay(2000);
-
   lcd.clear();
 }
 
