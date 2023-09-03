@@ -42,8 +42,10 @@ NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
 
 void setup() {
   Serial.begin(9600);
+  Wire.begin();
   lcd.init();
   lcd.backlight();
+
   pinMode(pompe1Pin, OUTPUT);
   pinMode(pompe2Pin, OUTPUT);
   pinMode(boutonPoussoirPompe1, INPUT);
@@ -240,9 +242,21 @@ void loop() {
     lcd.setCursor(0, 0);
     lcd.print("Write EEPROM...");
     EEPROM.write(shP1address, seuilHautP1);
+    int shP1readValue = EEPROM.read(shP1address);
+    if (shP1readValue != seuilHautP1) {
+      lcd.clear();
+      lcd.setCursor(0, 1);
+      lcd.print("Write error shP1");
+    }
     EEPROM.write(shP2address, seuilHautP2);
+    int shP2readValue = EEPROM.read(shP2address);
+    if (shP2readValue != seuilHautP2) {
+      lcd.clear();
+      lcd.setCursor(0, 2);
+      lcd.print("Write error shP2");
+    }
     delay(1000);
-    lcd.setCursor(0, 1);
+    lcd.setCursor(0, 3);
     lcd.print("Write successfull!");
     delay(1500);
     lcd.clear();
