@@ -1,7 +1,7 @@
-#include <EEPROM.h>               // Bibliothèque pour l'accès à l'EEPROM
-#include <Wire.h>                 // Bibliothèque pour la communication I2C
-#include <LiquidCrystal_I2C.h>    // Bibliothèque pour les écrans LCD I2C
-#include <NewPing.h>              // Bibliothèque pour le capteur ultrasonique
+#include <EEPROM.h>             // Bibliothèque pour l'accès à l'EEPROM
+#include <Wire.h>               // Bibliothèque pour la communication I2C
+#include <LiquidCrystal_I2C.h>  // Bibliothèque pour les écrans LCD I2C
+#include <NewPing.h>            // Bibliothèque pour le capteur ultrasonique
 
 // Déclaration des broches matérielles
 const int pompe1Pin = 2;
@@ -20,9 +20,9 @@ const int shP1address = 0;
 const int shP2address = 1;
 
 // Variables pour les seuils de déclenchement des pompes
-int seuilHautP1 = 0;
+int seuilHautP1 = 1;
 const int seuilBasP1 = 25;
-int seuilHautP2 = 0;
+int seuilHautP2 = 1;
 const int seuilBasP2 = 23;
 
 // Constante pour la distance maximale du capteur ultrasonique
@@ -47,8 +47,7 @@ int modeAuto = 1;
 int modeAdj = 0;
 
 // Initialisation des modules externes
-LiquidCrystal_I2C lcd(0x27, 16, 2);
-LiquidCrystal_I2C lcd1(0x26, 16, 2);
+LiquidCrystal_I2C lcd(0x27, 20, 4);
 NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
 
 void setup() {
@@ -58,8 +57,6 @@ void setup() {
   // Initialisation des écrans LCD
   lcd.init();
   lcd.backlight();
-  lcd1.init();
-  lcd1.backlight();
 
   // Configuration des broches en entrée ou en sortie
   pinMode(pompe1Pin, OUTPUT);
@@ -81,8 +78,6 @@ void setup() {
   lcd.print("Read shP1: ");
   lcd.setCursor(11, 0);
   lcd.print(shP1readValue);
-
-  delay(2000);
 
   int shP2readValue = EEPROM.read(shP2address);
   seuilHautP2 = shP2readValue;
@@ -182,9 +177,9 @@ void loop() {
     bpAdjMoins = digitalRead(boutonPoussoirAdjMoins);
     bpPompe1 = digitalRead(boutonPoussoirPompe1);
     bpPompe2 = digitalRead(boutonPoussoirPompe2);
-    digitalWrite(pompe1Pin, LOW);
+    digitalWrite(pompe1Pin, HIGH);
     etatPompe1Pin = 0;
-    digitalWrite(pompe2Pin, LOW);
+    digitalWrite(pompe2Pin, HIGH);
     etatPompe2Pin = 0;
 
     modeStr = "Mode: Adjust";
@@ -196,34 +191,33 @@ void loop() {
       lcd.setCursor(10, 2);
       if (seuilHautP1 < 10) {
         lcd.print(0);
-        lcd.print(seuilHautP1);
-      } else {
-        lcd.print(seuilHautP1);
       }
-      if (seuilHautP1 > 0) {
-        seuilHautP1 = seuilHautP1 + 1;
-      }
+      lcd.print(seuilHautP1);
+      seuilHautP1 = max(0, seuilHautP1 + 1);  // Augmenter le seuil en s'assurant qu'il reste positif
     } else if ((bpAdjMoins) && (bpPompe1)) {
       lcd.setCursor(0, 2);
       lcd.print("Seuil P1: ");
       lcd.setCursor(10, 2);
       if (seuilHautP1 < 10) {
         lcd.print(0);
-        lcd.print(seuilHautP1);
-      } else {
-        lcd.print(seuilHautP1);
       }
-      if (seuilHautP1 > 0) {
-        seuilHautP1 = seuilHautP1 - 1;
-      }
+      lcd.print(seuilHautP1);
+      seuilHautP1 = max(0, seuilHautP1 - 1);  // Diminuer le seuil en s'assurant qu'il reste positif
     }
 
-    // Écriture du seuil ajusté dans l'EEPROM
-    EEPROM.write(shP1address, seuilHautP1);
-    Serial.println("Write shP1:");
-    lcd.clear();
-    lcd.setCursor(0, 0);
-    lcd.print("Write shP1...");
+    else if ((bpAdjPlus == HIGH) && (bpAdjMoins == HIGH)) {
+      lcd.clear();
+      lcd.setCursor(0, 1);
+      lcd.print("Write EEPROM... Wait...");
+      lcd.setCursor(0, 2);
+      lcd.print("Write shP1");
+      EEPROM.write(shP1address, seuilHautP1 + 1);  // Écriture d'un octet à l'adresse spécifiée
+      lcd.setCursor(0, 3);
+      lcd.print("Write shP2");
+      EEPROM.write(shP2address, seuilHautP2 + 1);  // Écriture d'un octet à l'adresse spécifiée
+      delay(1000);
+      lcd.clear();
+    }
   }
 
   // Logique pour ajuster le seuil de la pompe 2
@@ -233,33 +227,18 @@ void loop() {
     lcd.setCursor(10, 2);
     if (seuilHautP2 < 10) {
       lcd.print(0);
-      lcd.print(seuilHautP2);
-    } else {
-      lcd.print(seuilHautP2);
     }
-    if (seuilHautP2 > 0) {
-      seuilHautP2 = seuilHautP2 + 1;
-    }
+    lcd.print(seuilHautP2);
+    seuilHautP2 = max(0, seuilHautP2 + 1);  // Augmenter le seuil en s'assurant qu'il reste positif
   } else if ((bpAdjMoins) && (bpPompe2)) {
     lcd.setCursor(0, 2);
     lcd.print("Seuil P2: ");
     lcd.setCursor(10, 2);
     if (seuilHautP2 < 10) {
       lcd.print(0);
-      lcd.print(seuilHautP2);
-    } else {
-      lcd.print(seuilHautP2);
     }
-    if (seuilHautP2 > 0) {
-      seuilHautP2 = seuilHautP2 - 1;
-    }
-    
-    // Écriture du seuil ajusté dans l'EEPROM
-    EEPROM.write(shP2address, seuilHautP2);
-    Serial.println("Write shP2");
-    lcd.clear();
-    lcd.setCursor(0, 1);
-    lcd.print("Write shP2...");
+    lcd.print(seuilHautP2);
+    seuilHautP2 = max(0, seuilHautP2 - 1);  // Diminuer le seuil en s'assurant qu'il reste positif
   }
 
   // Logique pour le mode automatique
