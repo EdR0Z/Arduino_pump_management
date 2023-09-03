@@ -186,9 +186,9 @@ void loop() {
     bpAdjMoins = digitalRead(boutonPoussoirAdjMoins);
     bpPompe1 = digitalRead(boutonPoussoirPompe1);
     bpPompe2 = digitalRead(boutonPoussoirPompe2);
-    digitalWrite(pompe1Pin, LOW);
+    digitalWrite(pompe1Pin, HIGH);
     etatPompe1Pin = 0;
-    digitalWrite(pompe2Pin, LOW);
+    digitalWrite(pompe2Pin, HIGH);
     etatPompe2Pin = 0;
 
     modeStr = "Mode: Adjust";
@@ -274,22 +274,22 @@ void loop() {
 
     // Logique pour activer/désactiver la pompe 1 en fonction de la distance
     if (distance <= seuilHautP1) {
-      digitalWrite(pompe1Pin, HIGH);
+      digitalWrite(pompe1Pin, LOW);
       etatPompe1Str = "P1: ON ";
       etatPompe1Pin = 1;
     } else if (distance >= seuilBasP1) {
-      digitalWrite(pompe1Pin, LOW);
+      digitalWrite(pompe1Pin, HIGH);
       etatPompe1Str = "P1: OFF";
       etatPompe1Pin = 0;
     }
 
     // Logique pour activer/désactiver la pompe 2 en fonction de la distance
     if (distance <= seuilHautP2) {
-      digitalWrite(pompe2Pin, HIGH);
+      digitalWrite(pompe2Pin, LOW);
       etatPompe2Str = "P2: ON ";
       etatPompe2Pin = 1;
     } else if (distance >= seuilBasP2) {
-      digitalWrite(pompe2Pin, LOW);
+      digitalWrite(pompe2Pin, HIGH);
       etatPompe2Str = "P2: OFF";
       etatPompe2Pin = 0;
     }
