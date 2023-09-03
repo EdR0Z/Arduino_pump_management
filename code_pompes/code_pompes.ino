@@ -14,6 +14,7 @@ const int boutonPoussoirAdjMoins = 8;
 const int boutonPoussoirAdjPlus = 9;
 const int TRIGGER_PIN = 10;
 const int ECHO_PIN = 11;
+const int delaimesure = 1;
 
 // Adresses EEPROM pour le stockage de données
 const int shP1address = 0;
@@ -21,9 +22,9 @@ const int shP2address = 1;
 
 // Variables pour les seuils de déclenchement des pompes
 int seuilHautP1 = 0;
-const int seuilBasP1 = 25;
+const int seuilBasP1 = 17;
 int seuilHautP2 = 0;
-const int seuilBasP2 = 23;
+const int seuilBasP2 = 14;
 
 // Constante pour la distance maximale du capteur ultrasonique
 const int MAX_DISTANCE = 40;
@@ -70,6 +71,12 @@ void setup() {
   pinMode(ECHO_PIN, INPUT);
   pinMode(TRIGGER_PIN, OUTPUT);
 
+  digitalWrite(pompe1Pin, HIGH);
+  etatPompe1Pin = 0;
+
+  digitalWrite(pompe2Pin, HIGH);
+  etatPompe2Pin = 0;
+
   // Lecture des seuils à partir de l'EEPROM et affichage
   int shP1readValue = EEPROM.read(shP1address);
   seuilHautP1 = shP1readValue;
@@ -78,8 +85,6 @@ void setup() {
   lcd.print("Read shP1: ");
   lcd.setCursor(11, 0);
   lcd.print(shP1readValue);
-
-  delay(500);
 
   int shP2readValue = EEPROM.read(shP2address);
   seuilHautP2 = shP2readValue;
@@ -95,7 +100,7 @@ void setup() {
 
 void loop() {
   // Attente courte pour éviter de saturer la boucle
-  delay(2);
+  delay(delaimesure * 1000);
 
   // Mesure de la distance avec le capteur ultrasonique
   duration = sonar.ping_median(5);  // Mesure de la distance médiane à partir de 5 échantillons
