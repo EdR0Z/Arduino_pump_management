@@ -47,8 +47,7 @@ int modeAuto = 1;
 int modeAdj = 0;
 
 // Initialisation des modules externes
-LiquidCrystal_I2C lcd(0x27, 16, 2);
-LiquidCrystal_I2C lcd1(0x26, 16, 2);
+LiquidCrystal_I2C lcd(0x27, 20, 4);
 NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
 
 void setup() {
