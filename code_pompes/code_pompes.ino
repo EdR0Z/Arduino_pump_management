@@ -79,7 +79,7 @@ void setup() {
   lcd.setCursor(11, 0);
   lcd.print(shP1readValue);
 
-  delay(2000);
+  delay(500);
 
   int shP2readValue = EEPROM.read(shP2address);
   seuilHautP2 = shP2readValue;
@@ -88,7 +88,7 @@ void setup() {
   lcd.setCursor(11, 1);
   lcd.print(shP2readValue);
 
-  delay(5000);
+  delay(2000);
 
   lcd.clear();
 }
@@ -97,6 +97,19 @@ void loop() {
   // Attente courte pour éviter de saturer la boucle
   delay(2);
 
+  // Mesure de la distance avec le capteur ultrasonique
+  duration = sonar.ping_median(5);  // Mesure de la distance médiane à partir de 5 échantillons
+  if (duration == 0) {
+    // Gestion de l'erreur si la mesure est invalide (distance de 0)
+    distance = -1;  // Définit la distance à -1 pour indiquer une erreur
+  } else {
+    distance = duration * 0.034 / 2;
+  }
+  if (distance == -1) {
+    lcd.setCursor(0, 2);
+    lcd.print("Erreur lecture capteur");
+  }
+
   // Affichage des informations sur l'écran LCD
   lcd.setCursor(0, 0);
   lcd.print(modeStr);
@@ -104,7 +117,10 @@ void loop() {
   lcd.print(etatPompe1Str + " " + etatPompe2Str);
   lcd.setCursor(0, 3);
   lcd.print("Distance: ");
-  if (distance < 10) {
+  if (distance < 0) {
+    lcd.setCursor(10, 3);
+    lcd.print("Err");
+  } else if (distance < 10) {
     lcd.setCursor(10, 3);
     lcd.print(0);
     lcd.print(distance);
@@ -112,15 +128,6 @@ void loop() {
     lcd.setCursor(10, 3);
     lcd.print(distance);
   }
-
-  // Mesure de la distance avec le capteur ultrasonique
-  digitalWrite(TRIGGER_PIN, LOW);
-  delayMicroseconds(5);
-  digitalWrite(TRIGGER_PIN, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(TRIGGER_PIN, LOW);
-  duration = pulseIn(ECHO_PIN, HIGH);
-  distance = duration * 0.034 / 2;
 
   // Lecture des états des sélecteurs de mode
   selecteurMode = digitalRead(interSelecteurMode);
@@ -214,13 +221,6 @@ void loop() {
         seuilHautP1 = seuilHautP1 - 1;
       }
     }
-
-    // Écriture du seuil ajusté dans l'EEPROM
-    EEPROM.write(shP1address, seuilHautP1);
-    Serial.println("Write shP1:");
-    lcd.clear();
-    lcd.setCursor(0, 0);
-    lcd.print("Write shP1...");
   }
 
   // Logique pour ajuster le seuil de la pompe 2
@@ -250,13 +250,20 @@ void loop() {
     if (seuilHautP2 > 0) {
       seuilHautP2 = seuilHautP2 - 1;
     }
+  }
 
+  if ((bpAdjPlus) && (bpAdjMoins)) {
     // Écriture du seuil ajusté dans l'EEPROM
-    EEPROM.write(shP2address, seuilHautP2);
-    Serial.println("Write shP2");
     lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("Write EEPROM...");
+    EEPROM.write(shP1address, seuilHautP1);
+    EEPROM.write(shP2address, seuilHautP2);
+    delay(1000);
     lcd.setCursor(0, 1);
-    lcd.print("Write shP2...");
+    lcd.print("Write successfull!");
+    delay(1500);
+    lcd.clear();
   }
 
   // Logique pour le mode automatique
