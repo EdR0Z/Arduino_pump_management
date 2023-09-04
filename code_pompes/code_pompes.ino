@@ -91,7 +91,7 @@ void loop() {
   }
   if (distance == -1) {
     lcd.setCursor(0, 2);
-    lcd.print("Erreur lecture capteur");
+    lcd.print("Erreur lecture");
   }
 
   // Affichage des informations sur l'écran LCD
